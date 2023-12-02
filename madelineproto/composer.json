@@ -1,0 +1,66 @@
+{
+    "name": "danog/madelineproto",
+    "description": "PHP implementation of telegram's MTProto protocol.",
+    "type": "project",
+    "license": "AGPL-3.0-only",
+    "homepage": "https://daniil.it/MadelineProto",
+    "keywords": ["telegram", "mtproto", "protocol", "bytes", "messenger", "client", "PHP", "video", "stickers", "audio", "files", "GB"],
+    "conflict": {
+        "krakjoe/pthreads-polyfill": "*"
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "danog/primemodule": "^1",
+        "danog/magicalserializer": "^1.0",
+        "phpseclib/phpseclib": "dev-master#5e7d39153270dfd19d585504b0a29ac65a62adf9 as 2.0.15",
+        "vlucas/phpdotenv": "^3",
+        "erusev/parsedown": "^1.7",
+        "ext-mbstring": "*",
+        "ext-json": "*",
+        "ext-xml": "*",
+        "ext-fileinfo": "*",
+        "amphp/amp": "^2.0",
+        "amphp/websocket": "dev-master as 1",
+        "amphp/websocket-client": "dev-master as 1",
+        "amphp/socket": "^0.10",
+        "amphp/dns": "dev-master#aa1892bdf13b787d759df6f2523e8027a434d927 as v0.9.x-dev",
+        "amphp/artax": "dev-master as 3.0.99",
+        "amphp/file": "^0.3",
+        "amphp/uri": "^0.1.4",
+        "amphp/byte-stream": "^1.6",
+        "danog/dns-over-https": "^0.1"
+    },
+    "require-dev": {
+        "phpdocumentor/reflection-docblock": "^3.1",
+        "ennexa/amp-update-cache": "dev-master",
+        "phpunit/phpunit": "^8"
+    },
+    "suggest": {
+        "ext-libtgvoip": "Install the php-libtgvoip extension to make phone calls (https://github.com/danog/php-libtgvoip)"
+    },
+    "authors": [{
+        "name": "Daniil Gentili",
+        "email": "daniil@daniil.it"
+    }],
+    "autoload": {
+        "psr-0": {
+            "danog\\MadelineProto\\": "src/"
+        },
+        "files": [
+            "src/BigIntegor.php",
+            "src/YieldReturnValue.php",
+            "src/ReflectionGenerator.php",
+            "src/polyfill.php"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/danog/phpseclib"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/danog/dns"
+        }
+    ]
+}
