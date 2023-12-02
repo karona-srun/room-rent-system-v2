@@ -28,4 +28,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/room', RoomController::class);
     Route::resource('/room-rent', RoomRentController::class);
     Route::resource('/message', MessageController::class);
+    Route::get('/send-message/{id}', [MessageController::class, 'sendMessage']);
+    Route::get('/send-message-all/{id}', [MessageController::class, 'sendMessageAll']);
 });

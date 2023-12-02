@@ -19,15 +19,16 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-12">
-                            <form action="{{ url('message') }}" method="post">
+                            <form action="{{ url('message', $message->id) }}" method="post">
                                 @csrf
+                                @method('patch')
                                 <div class="row">
                                     <div class="col-sm-12 mb-2">
                                         <label class="form-label">{{ __('app.label_choose_room') }} <span
                                                 class="tx-danger">*</span></label>
                                                 <select class="form-control select_Room" name="room_rent[]" multiple>
                                                     @foreach ($rooms as $item)
-                                                        <option value="{{$item->id}}">{{ $item->name }}</option>
+                                                        <option value="{{$item->id}}" {{ in_array($item->id,json_decode($message->room_rent_id)) ? 'selected' : '' }}>{{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
                                         @error('room_rent')
@@ -40,7 +41,7 @@
                                 <div class="row mb-3">
                                     <div class="col-sm-12 mb-2">
                                         <label class="form-label">{{ __('app.label_write_message') }}</label>
-                                        <textarea class="form-control" rows="3" name="message">{{ old('message')}}</textarea>
+                                        <textarea class="form-control" rows="3" name="message">{{ $message->message }}</textarea>
                                         @error('message')
                                             <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false">
                                                 <li class="parsley-required">{{ $message }}</li>

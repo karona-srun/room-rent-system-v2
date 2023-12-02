@@ -71,7 +71,10 @@ class MessageController extends Controller
      */
     public function edit(Message $message)
     {
-        //
+        $message = Message::find($message->id);
+        $roomRents = RoomRent::pluck('room_id')->toArray();
+        $rooms = Room::where('status', 'Free')->whereIn('id',$roomRents)->orderBy('name')->get();
+        return view('message.edit', ['rooms' => $rooms,'message' => $message]);
     }
 
     /**
@@ -79,7 +82,36 @@ class MessageController extends Controller
      */
     public function update(Request $request, Message $message)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'room_rent' => 'required',
+            'message' => 'required',
+        ],[
+            'room_rent.required' => __('app.label_choose_room').__('app.label_required'),
+            'message.required' => __('app.label_write_message').__('app.label_required'),
+        ]);
+
+        if($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $room = Message::find($message->id);
+        $room->room_rent_id = json_encode($request->room_rent);
+        $room->message = $request->message;
+        $room->apartment_id = Auth::user()->apartment_id;
+        $room->user_id = Auth::user()->id;
+        $room->save();
+
+        return redirect('/message')->with('success',__('app.label_updated_successfully'));
+    }
+
+    public function sendMessage($id) 
+    {
+        
+    }
+
+    public function sendMessageAll($id) 
+    {
+        
     }
 
     /**
@@ -87,6 +119,9 @@ class MessageController extends Controller
      */
     public function destroy(Message $message)
     {
-        //
+        $message = Message::find($message->id);
+        $message->delete();
+
+        return redirect('/message')->with('delete', __('app.label_deleted_successfully'));
     }
 }

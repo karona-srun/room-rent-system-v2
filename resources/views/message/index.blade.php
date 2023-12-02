@@ -40,9 +40,9 @@
                                 <td>{{ $item->message }}</td>
                                 <td>
                                     <div class="btn-icon-list">
-                                        <a href="{{ url('room/'.$item->id.'/edit') }}" class="btn btn-indigo btn-icon me-2"  data-toggle="tooltip-primary" data-placement="top" title="{{ __('app.btn_edit')}}" data-bs-original-title="{{ __('app.btn_edit')}}"><i class="typcn typcn-edit"></i></a>
-                                        <a href="{{ url('room/'.$item->id.'/edit') }}" class="btn btn-primary btn-icon me-2" data-toggle="tooltip-primary" data-placement="top" title="{{ __('app.btn_send')}}" data-bs-original-title="{{ __('app.btn_send')}}"><i class="typcn typcn-location-arrow-outline"></i></a>
-                                        <form method="POST" action="{{ route('room.destroy', $item->id) }}">
+                                        <a href="{{ url('message/'.$item->id.'/edit') }}" class="btn btn-indigo btn-icon me-2"  data-toggle="tooltip-primary" data-placement="top" title="{{ __('app.btn_edit')}}" data-bs-original-title="{{ __('app.btn_edit')}}"><i class="typcn typcn-edit"></i></a>
+                                        <a href="{{ url('send-message/'.$item->id) }}" class="btn btn-primary btn-icon me-2" data-toggle="tooltip-primary" data-placement="top" title="{{ __('app.btn_send')}}" data-bs-original-title="{{ __('app.btn_send')}}"><i class="typcn typcn-location-arrow-outline"></i></a>
+                                        <form method="POST" action="{{ route('message.destroy', $item->id) }}">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <button type="submit" class="btn btn-danger btn-icon" data-toggle="tooltip-primary" data-placement="top" title="{{ __('app.btn_delete')}}" data-bs-original-title="{{ __('app.btn_delete')}}"><i
