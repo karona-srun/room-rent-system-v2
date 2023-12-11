@@ -2724,7 +2724,7 @@ textarea.form-control-lg {
 .input-group {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: stretch;
   width: 100%;
 }
@@ -2753,10 +2753,10 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
   padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--bs-body-color);
+  color: #000;
   text-align: center;
   white-space: nowrap;
   background-color: var(--bs-tertiary-bg);
@@ -12713,6 +12713,7 @@ textarea.form-check-input.parsley-error ~ .form-check-label {
 
 .input-group-prepend .input-group-text {
   height: 38px;
+  min-width: 120px;
 }
 .input-group-prepend .input-group-text .ckbox {
   height: 21px;
@@ -16843,6 +16844,9 @@ textarea.parsley-success:focus {
   border-top: 1px solid #cdd4e0;
   margin-top: auto;
   display: none;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 @media (min-width: 992px) {
   .az-footer {
@@ -16856,12 +16860,12 @@ textarea.parsley-success:focus {
 .az-footer .container-lg,
 .az-footer .container-xl,
 .az-footer .container-xxl {
-  font-size: 12px;
+  font-size: 14px;
   padding: 10px 20px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  color: #7987a1;
+  justify-content: center;
+  color: #000;
 }
 @media (min-width: 992px) {
   .az-footer .container {
@@ -22597,7 +22601,7 @@ body {
 }
 
 .az-card-signin {
-  height: 560px;
+  /* height: 560px; */
   padding: 20px;
   display: flex;
   flex-direction: column;

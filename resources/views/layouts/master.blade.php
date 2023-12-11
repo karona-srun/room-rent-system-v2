@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="{{ env('APP_LOCALE') }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Room Rent System v2">
     <meta name="author" content="Karona Srun">
-    <title></title>
+    <title>{{ Auth::User()->apartment->name ?? 'Azia' }}</title>
+    <link rel="fluid-icon" href="{{ asset('assets'.Auth::User()->apartment->logo) }}" title="Azia">
+    <link rel="mask-icon" href="{{ asset('assets'.Auth::User()->apartment->logo) }}" color="#000000">
+    <link rel="alternate icon" class="js-site-favicon" type="image/png" href="{{ asset('assets'.Auth::User()->apartment->logo) }}">
+    <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="{{ asset('assets'.Auth::User()->apartment->logo) }}">
+
     <link href="{{ asset('assets/lib/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/typicons.font/typicons.css') }}" rel="stylesheet">
@@ -17,13 +22,20 @@
     <link href="{{ asset('assets/lib/select2/css/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/azia.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Siemreap" rel="stylesheet">
+    @yield('css')
+    <style>
+        html body {
+            font-family: 'Siemreap' !important;
+        }
+    </style>
 </head>
 
 <body class="az-body az-dashboard-eight">
     <div class="az-header az-header-primary">
         <div class="container">
             <div class="az-header-left">
-                <a href="index.html" class="az-logo">azia</a>
+                <a href="{{ url('/dashboard') }}" class="az-logo">{{ Auth::User()->apartment->name ?? 'Azia' }}</a>
                 <a href="" id="azNavShow" class="az-header-menu-icon d-lg-none"><span></span></a>
             </div><!-- az-header-left -->
             <div class="az-header-center">
@@ -74,7 +86,7 @@
     <div class="az-navbar az-navbar-two az-navbar-dashboard-eight">
         <div class="container">
             <div class="az-navbar-header">
-                <a href="index.html" class="az-logo">azia</a>
+                <a href="{{ url('/dashboard') }}" class="az-logo">azia</a>
             </div><!-- az-navbar-header -->
             <div class="az-navbar-search">
                 <input type="search" class="form-control" placeholder="Search for anything...">
@@ -82,42 +94,42 @@
             </div><!-- az-navbar-search -->
             <ul class="nav">
                 <li class="nav-label">Main Menu</li>
-                <li class="nav-item active">
-                    <a href="index.html" class="nav-link"><i class="typcn typcn-clipboard"></i>
+                <li class="nav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}" class="nav-link"><i class="typcn typcn-clipboard"></i>
                         {{ __('app.menu_dashboard') }}</a>
                 </li><!-- nav-item -->
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('room*') || Request::is('room-rent*') ? 'active' : '' }}">
                     <a href="#" class="nav-link with-sub"><i class="typcn typcn-folder"></i>
                         {{ __('app.menu_room_info') }}</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="{{ url('room') }}" class="nav-sub-link">
+                        <li class="nav-sub-item {{ Request::is('room*') ? 'active' : '' }}"><a href="{{ url('room') }}" class="nav-sub-link">
                                 {{ __('app.menu_room') }}</a></li>
-                        <li class="nav-sub-item"><a href="{{ url('room-rent') }}" class="nav-sub-link">
+                        <li class="nav-sub-item {{ Request::is('room-rent*') ? 'active' : '' }}"><a href="{{ url('room-rent') }}" class="nav-sub-link">
                                 {{ __('app.menu_room_rent') }}</a></li>
                     </ul>
                 </li><!-- nav-item -->
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('message*') ? 'active' : '' }}">
                     <a href="{{ url('message') }}" class="nav-link"><i class="typcn typcn-message"></i>
                         {{ __('app.menu_send_message') }}</a>
                 </li><!-- nav-item -->
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('invoice*') ? 'active' : '' }}">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-book"></i>
                         {{ __('app.menu_invoice') }}</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="elem-accordion.html" class="nav-sub-link active">
+                        <li class="nav-sub-item"><a href="{{ url('invoice') }}" class="nav-sub-link active">
                                 {{ __('app.menu_invoice_list') }}</a></li>
                         <li class="nav-sub-item"><a href="elem-alerts.html" class="nav-sub-link">
                                 {{ __('app.menu_search_invoice') }}</a></li>
                     </ul>
                 </li><!-- nav-item -->
                 <li class="nav-item">
-                    <a href="" class="nav-link with-sub"><i class="typcn typcn-edit"></i>​
+                    <a href="#" class="nav-link with-sub"><i class="typcn typcn-edit"></i>​
                         {{ __('app.menu_setting') }}</a>
                     <ul class="nav-sub">
-                        <li class="nav-sub-item"><a href="util-background.html" class="nav-sub-link">
+                        <li class="nav-sub-item"><a href="{{url('user')}}" class="nav-sub-link">
                                 {{ __('app.menu_user') }}</a></li>
-                        <li class="nav-sub-item"><a href="util-border.html" class="nav-sub-link">
-                                {{ __('app.menu_setting_system') }}</a></li>
+                        <li class="nav-sub-item"><a href="{{url('apartment')}}" class="nav-sub-link">
+                                {{ __('app.label_apartment_info') }}</a></li>
                     </ul>
                 </li><!-- nav-item -->
             </ul><!-- nav -->
@@ -146,11 +158,7 @@
 
     <div class="az-footer ht-40">
         <div class="container ht-100p pd-t-0-f">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com
-                2020</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-                    href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
-                    templates</a> from Bootstrapdash.com</span>
+          <span class="text-muted text-center">Copyright ©{{now()->format('Y')}} {{ config('app.name') }} (Cambodia). All rights reserved.</span>
         </div><!-- container -->
     </div><!-- az-footer -->
 
@@ -175,6 +183,10 @@
             $(".alert").delay(5000).slideUp(300);
 
             $('[data-toggle="tooltip"]').tooltip();
+
+            $('.btn-save-and-create').click( function(e) {
+                $('.saveAndCreate').val('new');
+            })
 
             // colored tooltip
             $('[data-toggle="tooltip-primary"]').tooltip({
@@ -282,6 +294,44 @@
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity
             });
+
+
+            // Calculator invoice
+            $('.old_number, .new_number').keyup(function() {
+                var cost = $('.water_cost').attr('data-value');
+                var oldVal = $('.old_number').val();
+                var newVal = $('.new_number').val();
+                console.log(cost);
+                var total = (newVal - oldVal) * cost;
+
+                $('.water_cost').val(total);
+            });
+
+            $('.btn-cal').click(function() {
+                var water_cost = $('.water_cost').val();
+                var trash_cost = $('.trash_cost').val();
+                var room_cost = $('.room_cost').val();
+                var eletrotic_cost = $('.electric_cost').val();
+
+                var total_amount = '$' + (parseFloat(room_cost)) +
+                    ' + ' + (parseFloat(trash_cost) + parseFloat(water_cost) + parseFloat(eletrotic_cost)) +'៛';
+
+                var total_riel = (parseFloat(trash_cost) + parseFloat(water_cost) + parseFloat(eletrotic_cost));
+                
+                var exchange_riel = $('.trash_cost').attr('data-exchange');
+                console.log(exchange_riel)
+            
+                var sumtotal = parseFloat(total_riel) / parseFloat(exchange_riel);
+                var total = '$' + (parseFloat(room_cost) + parseFloat(sumtotal)).toFixed(2);
+                
+                if(total_amount == '$NaN + NaN៛'){
+                    $('.total_amount').val(0.00);
+                    $('.sub_total_amount').val(0.00);
+                }else{
+                    $('.sub_total_amount').val(total_amount);
+                    $('.total_amount').val(total);
+                }
+            })
         });
 
         function showTime() {
@@ -301,7 +351,7 @@
                 daysList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Aug', 'Oct', 'Nov', 'Dec'];
             }
-            let date = myDate.getDate();
+            let date = 'ទី'+myDate.getDate();
             let month = monthsList[myDate.getMonth()];
             let year = myDate.getFullYear();
             let day = daysList[myDate.getDay()];
@@ -331,6 +381,7 @@
         }
         setInterval(showTime, 1000);
     </script>
+    @yield('js')
 </body>
 
 </html>

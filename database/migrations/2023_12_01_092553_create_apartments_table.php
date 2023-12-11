@@ -15,13 +15,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('logo')->nullable();
-            $table->decimal('exchange_riel',8,2);
-            $table->decimal('water_cost',8,2);
-            $table->decimal('trash_cost',8,2);
-            $table->decimal('wifi_cost',8,2)->nullable();
-            $table->decimal('parking_cost',8,2)->nullable();
+            $table->double('exchange_riel',8);
+            $table->double('water_cost',8);
+            $table->double('trash_cost',8);
+            $table->double('wifi_cost',8)->nullable();
+            $table->double('parking_cost',8)->nullable();
             $table->longText('address')->nullable();
             $table->longText('noted')->nullable();
+            $table->longText('terms_and_conditions')->nullable();
             $table->timestamps();
         });
     }

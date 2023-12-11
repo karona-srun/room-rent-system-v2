@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\Room;
 use App\Models\RoomRent;
+use App\Services\MadelineService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -54,8 +56,12 @@ class MessageController extends Controller
         $room->apartment_id = Auth::user()->apartment_id;
         $room->user_id = Auth::user()->id;
         $room->save();
-
-        return redirect('/message')->with('success',__('app.label_created_successfully'));
+        
+        if($request->saveAndCreate == "new"){
+            return redirect('/message/create')->with('success',__('app.label_created_successfully'));
+        }else{
+            return redirect('/message')->with('success',__('app.label_created_successfully'));
+        }
     }
 
     /**
@@ -104,9 +110,30 @@ class MessageController extends Controller
         return redirect('/message')->with('success',__('app.label_updated_successfully'));
     }
 
-    public function sendMessage($id) 
+    public function sendMessage($request)
     {
+        $peer = "+85585773007";
+        $message = "សួស្តី! ខ្ញុំគឺជាម៉ូឌែលអភិវឌ្ឍន៍ដែលអាចជួយអ្នកបាន។ តើមានអ្វីដែលអ្នកចង់សិក្សាទេ? ខ្ញុំអាចជួយបានក្នុងបញ្ហា​ច្បាស់លាស់ ឬការសរសេរឯកសារដែលអ្នកចង់មើលវិញ។ អ្នកអាចចូលទៅក្នុងកម្មវិធីដែលបានបង្កើតដើម្បីបង្ហាញភាសាដែលអ្នកចង់ប្រើ។ សូមជួយខ្ញុំដើម្បីសិក្សាបន្ថែម!";
+
+        $madelineService = new MadelineService();
+
+        // $madelineService->OTP('42020');
+        // $madelineService->Login($peer);
         
+        //$result = $madelineService->sendMessage($peer, $message);
+        
+        //return response()->json(['result' => $result]);
+
+        $apiId = env('APP_API_ID');
+        $apiHash = env('APP_API_HASH');
+        $phoneNumber = $peer;
+         
+        try {
+            $madelineService->sendMessageToTelegramUser($apiId, $apiHash, $phoneNumber, $message);
+            echo "Message sent successfully!";
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     public function sendMessageAll($id) 
@@ -117,9 +144,9 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Message $message)
+    public function messageDestroy($id)
     {
-        $message = Message::find($message->id);
+        $message = Message::find($id);
         $message->delete();
 
         return redirect('/message')->with('delete', __('app.label_deleted_successfully'));
