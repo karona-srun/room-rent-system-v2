@@ -65,7 +65,11 @@ class RoomController extends Controller
         $room->user_id = Auth::user()->id;
         $room->save();
 
-        return redirect('/room')->with('success',__('app.label_created_successfully'));
+        if($request->saveAndCreate == "new"){
+            return redirect('/room/create')->with('success',__('app.label_created_successfully'));
+        }else{
+            return redirect('/room')->with('success',__('app.label_created_successfully'));
+        }
     }
 
     /**

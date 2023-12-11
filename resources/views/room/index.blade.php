@@ -40,13 +40,12 @@
                                     <div class="btn-icon-list">
                                         <a href="{{ url('room/'.$item->id.'/edit') }}" class="btn btn-indigo btn-icon me-2"><i
                                                 class="typcn typcn-edit"></i></a>
-                                                <a href="#" class="btn btn-primary btn-icon me-2 " data-bs-toggle="modal" data-bs-target="#modaldemo2">View</a>
-                                                <form method="POST" action="{{ route('room.destroy', $item->id) }}">
-                                                    {{ csrf_field() }}
-                                                    {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-danger btn-icon"><i
-                                                        class="typcn typcn-trash"></i></button>
-                                                </form>
+                                        <form method="POST" action="{{ route('room.destroy', $item->id) }}">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <button type="submit" class="btn btn-danger btn-icon"><i
+                                                class="typcn typcn-trash"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

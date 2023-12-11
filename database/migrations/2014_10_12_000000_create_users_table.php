@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_active');
             $table->dateTime('last_login')->nullable();
+            $table->longText('device')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

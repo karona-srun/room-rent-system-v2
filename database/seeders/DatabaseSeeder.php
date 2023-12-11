@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             'exchange_riel' => '4000',
             'water_cost' => '4000',
             'trash_cost' => '4000',
-            'address' => 'ទីតាំងនៅបឹងកក់'
+            'address' => 'ទីតាំងនៅបឹងកក់',
+            'terms_and_conditions' => 'សូមបង់លុយជូនម្ចាស់ផ្ទះអោយបានមុនថ្ងៃទី 5 សូមអរគុណ!<br>លេខទូរសព្ទម្ចាស់ផ្ទះ 089 666665 / 098 226688'
         ]);
 
         \App\Models\User::factory()->create([

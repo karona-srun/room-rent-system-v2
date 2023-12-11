@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginController extends Controller
 {
@@ -18,6 +20,14 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
+
+    public function authenticated()
+    {
+        if (Auth::user()->is_active == 0) {
+            Auth::logout();
+            return redirect()->back()->withErrors(['email' => 'គណនីនេះត្រូវបានផ្អាកដំណើរការ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ ឬទាក់ទងផ្នែកជំនួយការ'])->withInput();
+        }
+    }
 
     use AuthenticatesUsers;
 

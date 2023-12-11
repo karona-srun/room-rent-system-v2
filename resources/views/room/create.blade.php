@@ -21,6 +21,7 @@
                         <div class="col-sm-12">
                             <form action="{{ url('room') }}" method="post">
                                 @csrf
+                                <input type="hidden" name="saveAndCreate" class="saveAndCreate" value="">
                                 <div class="row">
                                     <div class="col-sm-6 mb-2">
                                         <label class="form-label">{{ __('app.label_room') }} <span
@@ -66,6 +67,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
+                                        <button type="submit" class="btn btn-primary btn-save-and-create"><i class="typcn typcn-table"></i>
+                                            {{ __('app.btn_save_and_create') }}</button>
                                         <button type="submit" class="btn btn-primary"><i class="typcn typcn-table"></i>
                                             {{ __('app.btn_save') }}</button>
                                     </div>

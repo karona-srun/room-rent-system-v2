@@ -81,25 +81,33 @@
             @csrf
           <div class="form-group​​ has-danger">
             <label>{{ __('app.label_email')}}</label>
-            <input type="text" class="form-control" name="email" placeholder="Enter your email" value="">
+            <input type="text" class="form-control" name="email" placeholder="{{ __('app.label_user_email') }}" value="">
             @error('email')
                 <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false"><li class="parsley-required">{{ $message }}</li></ul>
             @enderror
-          </div><!-- form-group -->
+          </div>
           <div class="form-group mt-3">
             <label>{{ __('app.label_password')}}</label>
-            <input type="password" name="password" class="form-control" placeholder="Enter your password" value="">
+            <input type="password" name="password" class="form-control" placeholder="{{__('app.label_password')}}" value="">
             @error('password')
                 <ul class="parsley-errors-list filled" id="parsley-id-5" aria-hidden="false"><li class="parsley-required">{{ $message }}</li></ul>
             @enderror
-          </div><!-- form-group -->
+          </div>
+          <div class="form-group mt-3">
+            <label class="ckbox">
+                <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}><span>{{ __('app.label_remember_me') }}</span>
+              </label>
+          </div>
           <button type="submit" class="btn btn-az-primary btn-block">{{__('app.label_sign_in')}}</button>
         </form>
-      </div><!-- az-signin-header -->
+      </div>
       <div class="az-signin-footer mt-3">
-        <p><a href="">Forgot password?</a></p>
+        @if (Route::has('register'))
+        <p><a href="{{ route('password.request') }}">Forgot password?</a></p>
+       
         <p>Don't have an account? <a href="page-signup.html">Create an Account</a></p>
-      </div><!-- az-signin-footer -->
-    </div><!-- az-card-signin -->
+        @endif
+      </div>
+    </div>
   </div>
 @endsection
