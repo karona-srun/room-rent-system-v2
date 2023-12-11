@@ -2,6 +2,7 @@
 
 return [
     // Welcome page
+    'menu' => 'ម៉ីនុយ',
     'label_hi' => 'សួស្តី',
     'label_welcome' => 'ស្វាគមន៍មកកាន់កម្មវិធី!',
     'label_your_dashboard' => 'ផ្ទាំងគ្រប់គ្រងកម្មវិធីរបស់អ្នក',

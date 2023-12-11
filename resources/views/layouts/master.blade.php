@@ -88,13 +88,9 @@
         <div class="container">
             <div class="az-navbar-header">
                 <a href="{{ url('/dashboard') }}" class="az-logo">azia</a>
-            </div><!-- az-navbar-header -->
-            <div class="az-navbar-search">
-                <input type="search" class="form-control" placeholder="Search for anything...">
-                <button class="btn"><i class="fas fa-search "></i></button>
-            </div><!-- az-navbar-search -->
+            </div>
             <ul class="nav">
-                <li class="nav-label">Main Menu</li>
+                <li class="nav-label"><p style="font-size: 1rem; color: #000;">{{__('app.menu')}}</p></li>
                 <li class="nav-item {{ Request::is('dashboard') ? 'active' : '' }}">
                     <a href="{{ url('/dashboard') }}" class="nav-link"><i class="typcn typcn-clipboard"></i>
                         {{ __('app.menu_dashboard') }}</a>
