@@ -8,8 +8,11 @@ use App\Models\Room;
 use App\Models\RoomRent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class InvoiceController extends Controller
 {
@@ -68,7 +71,7 @@ class InvoiceController extends Controller
 
         $invoice = new Invoice();
         $invoice->is_paid = 0;
-        $invoice->is_screenshot = 0;
+        $invoice->is_screenshot = 0; // Not yet
         $invoice->invoice_no = $this->invoiceNo();
         $invoice->invoice_date = $request->day.'-'.$request->month.'-'.$request->year;
         $invoice->room_rent_id = $request->room;
@@ -131,7 +134,7 @@ class InvoiceController extends Controller
         }
 
         $invoice = Invoice::find($id);
-        $invoice->is_screenshot = 0;
+        $invoice->is_screenshot = 0; // Not yet
         $invoice->invoice_no = $this->invoiceNo();
         $invoice->invoice_date = $request->day.'-'.$request->month.'-'.$request->year;
         $invoice->room_rent_id = $request->room;
@@ -173,12 +176,26 @@ class InvoiceController extends Controller
         $roomRents = RoomRent::pluck('room_id')->toArray();
         $rooms = Room::whereIn('id',$roomRents)->orderBy('name')->get();
         $apart = Apartment::find(Auth::user()->apartment_id);
+        View::share(['rooms' => $rooms,'apart' => $apart, 'invoice' => $invoice]);
         return view('invoice.screenshot',['rooms' => $rooms,'apart' => $apart, 'invoice' => $invoice]);
     }
 
-    public function saveScreenshot(Request $request, $id)
+    public function saveScreenshot(Request $request)
     {
-        
+        Log::info($request->base64data);
+        $image = $request->base64data;  
+        $image_parts = explode(";base64,", $image);
+        $image_base64 = base64_decode($image_parts[1]);
+        $filename = "invoice_room_" . $request->id . "_month_" . date('m') . ".jpg";
+        $file = $filename;
+
+        Storage::disk('invoices')->put($file,$image_base64);
+
+        $invoice = Invoice::find($request->id);
+        $invoice->is_screenshot = 1; // Done
+        $invoice->save();
+
+        return redirect('/invoice')->with('success', __('app.label_screenshot_successfully'));
     }
 
     /**

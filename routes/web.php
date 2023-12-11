@@ -43,7 +43,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/invoice/pay/{id}', [InvoiceController::class, 'pay']);
     Route::get('/invoice/print/{id}', [InvoiceController::class, 'print']);
     Route::get('/invoice/screenshot/{id}', [InvoiceController::class, 'screenshot']);
-    Route::post('/invoice/screenshot/{id}', [InvoiceController::class, 'saveScreenshot']);
+    Route::post('/invoice-base64-to-image', [InvoiceController::class, 'saveScreenshot']);
+    
 
     Route::resource('/user', UserController::class);
     Route::get('/user/status/{id}', [UserController::class, 'userStatus']);

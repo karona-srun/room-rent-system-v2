@@ -112,6 +112,7 @@ return [
     'label_day' => 'ថ្ងៃទី',
     'label_month' => 'ខែ',
     'label_year' => 'ឆ្នាំ',
+    'label_progress' => 'កំពុងដំណើរការ...',
     'label_screenshot' => 'ថតវិក័យប័ត្រ',
     'label_invoice_date' => 'វិក័យប័ត្រនៅ',
     'label_created_at' => 'បានបង្កើតនៅ',
@@ -130,6 +131,7 @@ return [
     'label_deleted_successfully' => 'ទិន្នន័យរបស់អ្នកត្រូវបានលុបដោយជោគជ័យ!',
     'label_unblocked_successfully' => 'គណនីត្រូវបានបើកដំណើរការជាធម្មតា',
     'label_blocked_successfully' => 'គណនីត្រូវបានផ្អាកដំណើរការ',
+    'label_screenshot_successfully' => 'វិក័យប័ត្របានថតដោយជោគជ័យ!',
     'label_changed_password_successfully' => 'ពាក្យសម្ងាត់របស់អ្នកត្រូវបានផ្លាសស់ប្តូរដោយជោគជ័យ',
 
     // User page

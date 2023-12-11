@@ -230,8 +230,8 @@
                                         {{ __('app.btn_cal') }}</button>
                                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>
                                             {{ __('app.btn_save') }}</button>
-                                        <button type="button" class="btn btn-info"><i class="fas fa-images"></i>
-                                            {{ __('app.label_screenshot') }}</button>
+                                        {{-- <button type="button" class="btn btn-info"><i class="fas fa-images"></i>
+                                            {{ __('app.label_screenshot') }}</button> --}}
                                     </div>
                                 </div>
                             </form>

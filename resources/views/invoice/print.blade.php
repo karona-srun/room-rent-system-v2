@@ -17,10 +17,12 @@
     <link href="{{ asset('assets/lib/select2/css/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/azia.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-    <style>
+    <style type="text/css" media="print">
+
         .card {
             border: 1px solid transparent !important;
         }
+        
     </style>
 </head>
 
@@ -34,8 +36,8 @@
                             <div class="col-sm-12">
                                 <div>
                                     <div class="screenshot m-5">
-                                        <div class="row mt-3 mb-4">
-                                            <div class="col-sm-6 mb-4">
+                                        <div class="row mt-3 mb-3">
+                                            <div class="col-sm-6 mb-2">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">
                                                         <h3>{{ __('app.invoice') }}</h3>
@@ -43,7 +45,7 @@
                                                 </div>
                                             </div>
     
-                                            <div class="col-lg-6 mb-4 text-end">
+                                            <div class="col-lg-6 mb-3 text-end">
                                                 <div class="input-group text-black" style="justify-content: end;">
                                                     {{ __('app.label_day') }}<input type="text"
                                                         class="form-control-custom label_date" name="day"
@@ -57,7 +59,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="row">
                                             <div class="col-sm-6 mb-4">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -73,25 +75,16 @@
                                                                 {{ $item->name }}</option>
                                                         @endforeach
                                                     </select>
-    
-                                                    
                                                 </div>
-                                                @error('room_cost')
-                                                    <ul class="parsley-errors-list filled mx-2 mt-2" id="parsley-id-5"
-                                                        aria-hidden="false">
-                                                        <li class="parsley-required">{{ $message }}</li>
-                                                    </ul>
-                                                @enderror
                                             </div>
-    
-                                            <div class="col-lg-6 mb-4">
+                                            <div class="col-sm-6 mb-4">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">
                                                             {{ __('app.room_cost') }}
                                                         </div>
                                                     </div>
-                                                    <input type="text" class="form-control-custom price text-end"
+                                                    <input type="text" class="form-control-custom price text-end room_cost"
                                                         name="room_cost" placeholder="0" value="{{ $invoice->room_cost }}">
                                                     <div class="input-group-append">
                                                         <span class="text-black">$</span>
@@ -100,7 +93,7 @@
                                             </div>
                                         </div>
     
-                                        <div class="row mb-4">
+                                        <div class="row">
                                             <div class="col-lg-12 mb-4">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -124,8 +117,8 @@
                                             
                                         </div>
     
-                                        <div class="row mb-4">
-                                            <div class="col-sm-5 mb-4">
+                                        <div class="row">
+                                            <div class="col-sm-5 mb-3">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text float-none">
@@ -141,7 +134,7 @@
                                                         placeholder="0" value="{{$invoice->water_new_number}}">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3 mb-4">
+                                            <div class="col-sm-3 mb-3">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend old_number" style="width: 82px">
                                                         <div class="input-group-text">
@@ -152,18 +145,18 @@
                                                         placeholder="0" value="{{$invoice->water_old_number}}">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 mb-4">
+                                            <div class="col-sm-4 mb-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control-custom water_cost text-end"
-                                                        name="water_cost" placeholder="0" value="{{$invoice->water_cost}}">
+                                                        name="water_cost" placeholder="0" value="{{$invoice->water_cost}}​">​
                                                     <div class="input-group-append">
                                                         <span class="text-black">៛</span>
-                                                    </div>
+                                                    </div> 
                                                 </div>
                                             </div>
                                         </div>
     
-                                        <div class="row mb-4">
+                                        <div class="row">
                                             <div class="col-sm-12 mb-4">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -179,8 +172,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row mb-4 flex-row justify-content-end">
-                                            <div class="col-sm-4 mb-3 text-right">
+                                        <div class="row flex-row justify-content-end">
+                                            <div class="col-sm-6 mb-3 text-right">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">
@@ -192,8 +185,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row mb-1 flex-row justify-content-end">
-                                            <div class="col-sm-4 mb-3 text-right">
+                                        <div class="row flex-row justify-content-end">
+                                            <div class="col-sm-6 mb-3 text-right">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">
@@ -203,19 +196,8 @@
                                                         name="total_amount" placeholder="0" value="{{ $invoice->total_amount }}">
                                                 </div>
                                             </div>
-                                            @error('sub_total_amount')
-                                            <div class="row mb-4 flex-row justify-content-end">
-                                                <div class="col-sm-6 mb-3 text-right">
-                                                <ul class="parsley-errors-list filled mx-2 mt-2 flex-row justify-content-end" id="parsley-id-5"
-                                                    aria-hidden="false">
-                                                    <li class="parsley-required text-end">{{ $message }}</li>
-                                                </ul>
-                                            
-                                                </div>
-                                            </div>
-                                            @enderror
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="row mt-2">
                                             <div class="col-sm-12 mb-2">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">

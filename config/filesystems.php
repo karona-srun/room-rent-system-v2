@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+        'invoices' => [
+            'driver' => 'local',
+            'root' => public_path('/invoices'),
+        ],
+
     ],
 
     /*

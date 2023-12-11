@@ -1,7 +1,13 @@
 @extends('layouts.master')
-
+@section('css')
+    <style>
+        input, select {
+            color: #000 !important;
+        }
+    </style>
+@endsection
 @section('content')
-    <div class="row row-sm mg-b-20 mg-lg-b-0">
+    <div class="row row-sm mb-5 mg-b-20 mg-lg-b-0">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body bd bd-t-0">
@@ -10,18 +16,21 @@
                             <div class="d-flex flex-row justify-content-between">
                                 <div class="pd-1">
                                 </div>
-                                <div class="pd-1"><a href="{{ url('invoice') }}"​ class="btn btn-az-secondary"><i
-                                    class="typcn typcn-camera-outline text-white"></i> {{ __('app.label_screenshot') }}</a>
+                                <div class="pd-1">
+                                    <button type="button" class="btn btn-default" id="progressReport">
+                                        <img src="{{ asset('assets/img/loading.gif') }}" width="20px" alt="" srcset=""></i>
+                                        {{ __('app.label_progress') }}</button>
+                                    <button type="button" class="btn btn-az-secondary" data-id="{{ $invoice->id }}"
+                                        id="saveReport"><i class="typcn typcn-camera-outline text-white"></i>
+                                        {{ __('app.label_screenshot') }}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row screenshot mb-4">
                         <div class="col-sm-12">
-                            <form action="{{ url('invoice/screenshot/', $invoice->id) }}" method="post">
-                                @csrf
-                                <input type="hidden" name="saveAndCreate" class="saveAndCreate" value="">
-                                <div class="screenshot m-5">
+                            <form action="#" method="post">
+                                <div class="m-5">
                                     <div class="row mt-3 mb-4">
                                         <div class="col-sm-6 mb-4">
                                             <div class="input-group-prepend">
@@ -38,10 +47,10 @@
                                                     value="{{ now()->format('d') }}">
                                                 {{ __('app.label_month') }}<input type="text"
                                                     class="form-control-custom label_date" name="month"
-                                                    value="{{ now()->format('m') }}">
+                                                    value="{{ now()->format('m') == 12 ? 1 : now()->format('m') + 1 }}">
                                                 {{ __('app.label_year') }}<input type="text"
                                                     class="form-control-custom label_date" name="year"
-                                                    value="{{ now()->format('Y') }}">
+                                                    value="{{ now()->format('m') == 12 ? now()->format('Y') + 1 : now()->format('Y') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -61,8 +70,6 @@
                                                             {{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
-
-                                                
                                             </div>
                                             @error('room_cost')
                                                 <ul class="parsley-errors-list filled mx-2 mt-2" id="parsley-id-5"
@@ -109,7 +116,7 @@
                                                 </ul>
                                             @enderror
                                         </div>
-                                        
+
                                     </div>
 
                                     <div class="row mb-4">
@@ -191,17 +198,6 @@
                                                     name="total_amount" placeholder="0" value="{{ $invoice->total_amount }}">
                                             </div>
                                         </div>
-                                        @error('sub_total_amount')
-                                        <div class="row mb-4 flex-row justify-content-end">
-                                            <div class="col-sm-6 mb-3 text-right">
-                                            <ul class="parsley-errors-list filled mx-2 mt-2 flex-row justify-content-end" id="parsley-id-5"
-                                                aria-hidden="false">
-                                                <li class="parsley-required text-end">{{ $message }}</li>
-                                            </ul>
-                                        
-                                            </div>
-                                        </div>
-                                        @enderror
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-sm-12 mb-2">
@@ -223,4 +219,41 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="{{ asset('assets/js/html2canvas.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#progressReport').hide()
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var element = $('.page-screenshot');
+
+            var id = window.location.pathname.split('/');
+            $('#saveReport').on('click', function() {
+                $('#progressReport').show();
+                $('#saveReport').hide();
+                html2canvas(document.querySelector(".screenshot")).then(canvas => {
+                    var imgData = canvas.toDataURL("image/png");
+                    $.ajax({
+                        method: 'post',
+                        url: '/invoice-base64-to-image',
+                        data: {
+                            id: id[3],
+                            base64data: imgData
+                        }
+                    }).done(function(msg) {
+                        window.location.replace('/invoice');
+                        console.log(msg);
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

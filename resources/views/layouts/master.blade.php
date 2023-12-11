@@ -7,6 +7,7 @@
     <meta name="description" content="Room Rent System v2">
     <meta name="author" content="Karona Srun">
     <title>{{ Auth::User()->apartment->name ?? 'Azia' }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="fluid-icon" href="{{ asset('assets'.Auth::User()->apartment->logo) }}" title="Azia">
     <link rel="mask-icon" href="{{ asset('assets'.Auth::User()->apartment->logo) }}" color="#000000">
     <link rel="alternate icon" class="js-site-favicon" type="image/png" href="{{ asset('assets'.Auth::User()->apartment->logo) }}">
