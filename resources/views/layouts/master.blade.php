@@ -58,7 +58,7 @@
                             <div class="az-img-user">
                                 <img src="{{ asset('assets'.Auth::user()->image) }}" alt="">
                             </div><!-- az-img-user -->
-                            <h6>Aziana Pechon</h6>
+                            <h6>{{ Auth::User()->name }}</h6>
                             <span>Premium Member</span>
                         </div><!-- az-header-profile -->
 

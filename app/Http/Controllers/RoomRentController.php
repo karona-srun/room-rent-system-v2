@@ -28,7 +28,8 @@ class RoomRentController extends Controller
      */
     public function create()
     {
-        $rooms = Room::where('status', 'Free')->orderBy('name')->get();
+        $roomRents = RoomRent::pluck('room_id')->toArray();
+        $rooms = Room::where('status', 'Free')->whereNotIn('id',$roomRents)->orderBy('name')->get();
         return view('room_rent.create',['rooms' => $rooms]);
     }
 
