@@ -67,6 +67,9 @@
                                         <label class="form-label">{{ __('app.label_telegram') }} <label class=" typcn typcn-arrow-maximise"></label> {{__('app.btn_disconnect')}}</label>
                                         <select class="form-control select2" name="telegram_id">
                                             <option value="">{{ __('app.label_choose') }}</option>
+                                            @foreach ($listGroups as $value => $group)
+                                                <option value="{{ $group->id }}">{{ $group->title }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

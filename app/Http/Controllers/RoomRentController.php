@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use App\Models\RoomRent;
+use App\Services\TelegramBot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +31,11 @@ class RoomRentController extends Controller
     {
         $roomRents = RoomRent::pluck('room_id')->toArray();
         $rooms = Room::where('status', 'Free')->whereNotIn('id',$roomRents)->orderBy('name')->get();
-        return view('room_rent.create',['rooms' => $rooms]);
+        
+        $telegramBot = new TelegramBot();
+        $listGroups = $telegramBot->listGroup();
+
+        return view('room_rent.create',['rooms' => $rooms,'listGroups' => $listGroups]);
     }
 
     /**
@@ -83,7 +88,9 @@ class RoomRentController extends Controller
     {
         $rooms = Room::where('status', 'Free')->orderBy('name')->get();
         $data = RoomRent::find($roomRent->id);
-        return view('room_rent.edit',['data' => $data,'rooms' => $rooms]);
+        $telegramBot = new TelegramBot();
+        $listGroups = $telegramBot->listGroup();
+        return view('room_rent.edit',['data' => $data,'rooms' => $rooms, 'listGroups' => $listGroups]);
     }
 
     /**

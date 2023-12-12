@@ -4,6 +4,7 @@ namespace App\Services;
 
 use danog\MadelineProto\API;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class MadelineService
 {
@@ -47,26 +48,23 @@ class MadelineService
         }
     }
 
-    function sendMessageToTelegramUser($apiId, $apiHash, $phoneNumber, $message) {
-        // Create a new instance of the MadelineProto API
+    public function sendMessageToTelegramUser($phoneNumber, $message) {
         $MadelineProto = new API('session.madeline');
-     
+
         try {
-            // Start the API
-            $MadelineProto->start();
-     
-            // Login using your API ID and API hash
+            // $MadelineProto->start();
+
             //$MadelineProto->phoneLogin($phoneNumber);
-     
+
             // Send the message to the Telegram user
             $MadelineProto->messages->sendMessage([
                 'peer' => $phoneNumber,
                 'message' => $message
             ]);
-     
-            // Logout from the API
-            $MadelineProto->logout();
-        } catch (\danog\MadelineProto\Exception $e) {
+
+            // $MadelineProto->logout();
+        } catch (\danog\MadelineProto\RPCErrorException $e) {
+            Log::info($e->getMessage());
             throw new Exception("Error sending message: " . $e->getMessage());
         }
     }

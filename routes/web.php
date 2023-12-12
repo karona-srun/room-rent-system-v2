@@ -36,7 +36,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/message', MessageController::class);
     Route::get('/message/destroy/{id}', [MessageController::class, 'messageDestroy']);
     Route::get('/send-message/{id}', [MessageController::class, 'sendMessage']);
-    Route::get('/send-message-all/{id}', [MessageController::class, 'sendMessageAll']);
+    Route::post('/send-message-all', [MessageController::class, 'sendMessageAll']);
+    Route::get('send-message-list/{id}', [MessageController::class, 'messageList']);
 
     Route::resource('/invoice', InvoiceController::class);
     Route::get('/invoice/destroy/{id}', [InvoiceController::class, 'invoiceDestroy']);
@@ -44,7 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/invoice/print/{id}', [InvoiceController::class, 'print']);
     Route::get('/invoice/screenshot/{id}', [InvoiceController::class, 'screenshot']);
     Route::post('/invoice-base64-to-image', [InvoiceController::class, 'saveScreenshot']);
-    
+    Route::get('/invoice/send/{id}', [InvoiceController::class, 'send']);
+    Route::post('/invoice/send-all', [InvoiceController::class, 'sendAll']);
 
     Route::resource('/user', UserController::class);
     Route::get('/user/status/{id}', [UserController::class, 'userStatus']);

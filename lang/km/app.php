@@ -89,6 +89,9 @@ return [
     'label_message_table' => 'តារាងផ្ញើសារ',
     'label_choose_room' => 'ជ្រើសរើសបន្ទប់',
     'label_write_message' => 'សរសេរសារ',
+    'label_send_noted' => 'បានផ្ញើ',
+    'label_send_at' => 'បានផ្ញើនៅ',
+    'label_message_list' => 'ប្រវត្តិការជជែក',
 
     // Inovice page
     'invoice' => 'វិក័យប័ត្រ',
@@ -134,6 +137,7 @@ return [
     'label_blocked_successfully' => 'គណនីត្រូវបានផ្អាកដំណើរការ',
     'label_screenshot_successfully' => 'វិក័យប័ត្របានថតដោយជោគជ័យ!',
     'label_changed_password_successfully' => 'ពាក្យសម្ងាត់របស់អ្នកត្រូវបានផ្លាសស់ប្តូរដោយជោគជ័យ',
+    'label_sent_successfully' => 'សាររបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!',
 
     // User page
     'label_account' => 'គណនី',

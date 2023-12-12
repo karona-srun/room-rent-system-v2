@@ -74,6 +74,9 @@
                                             {{ __('app.btn_disconnect') }}</label>
                                         <select class="form-control select2" name="telegram_id">
                                             <option value="">{{ __('app.label_choose') }}</option>
+                                            @foreach ($listGroups as $value => $group)
+                                                <option value="{{ $group->id }}">{{ $group->title }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

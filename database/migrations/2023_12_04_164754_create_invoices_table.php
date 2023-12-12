@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->boolean('is_paid');
             $table->boolean('is_screenshot');
+            $table->string('telegram_message')->nullable();
+            $table->string('telegram_message_at')->nullable();
             $table->string('invoice_no')->nullable();
             $table->string('invoice_date');
             $table->string('room_rent_id');
@@ -27,8 +29,6 @@ return new class extends Migration
             $table->string('sub_total_amount');
             $table->string('total_amount');
             $table->string('user_id')->nullable();
-            $table->string('sent_to')->nullable();
-            $table->string('sent_at')->nullable();
             $table->longText('terms_and_conditions')->nullable();
             $table->timestamps();
         });

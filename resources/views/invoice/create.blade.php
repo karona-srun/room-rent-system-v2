@@ -147,7 +147,7 @@
                                         <div class="col-sm-4 mb-4">
                                             <div class="input-group">
                                                 <input type="text" class="form-control-custom water_cost text-end"
-                                                    name="water_cost" placeholder="0" data-value="{{ $apart->water_cost }}" value="{{old('water_cost')}}">
+                                                    name="water_cost" placeholder="0" data-value="{{ $apart->water_cost }}" value="0">
                                                 <div class="input-group-append">
                                                     <span class="text-black">៛</span>
                                                 </div>
@@ -230,8 +230,6 @@
                                             {{ __('app.btn_save_and_create') }}</button>
                                         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>
                                             {{ __('app.btn_save') }}</button>
-                                        {{-- <button type="button" class="btn btn-info"><i class="fas fa-images"></i>
-                                            {{ __('app.label_screenshot') }}</button> --}}
                                     </div>
                                 </div>
                             </form>

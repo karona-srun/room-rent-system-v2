@@ -36,6 +36,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
                                                     <h3>{{ __('app.invoice') }}</h3>
+                                                    <input type="hidden" name="invoice_no" class="invoice_no"
+                                                    placeholder="0" value="{{$invoice->invoice_no}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -239,12 +241,14 @@
             $('#saveReport').on('click', function() {
                 $('#progressReport').show();
                 $('#saveReport').hide();
+                var invoice_no = $('.invoice_no').val();
                 html2canvas(document.querySelector(".screenshot")).then(canvas => {
                     var imgData = canvas.toDataURL("image/png");
                     $.ajax({
                         method: 'post',
                         url: '/invoice-base64-to-image',
                         data: {
+                            invoice_no: invoice_no,
                             id: id[3],
                             base64data: imgData
                         }

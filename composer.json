@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "danog/madelineproto": "dev-v8_no_psr_log",
         "guzzlehttp/guzzle": "^7.2",
+        "irazasyed/telegram-bot-sdk": "^3.13",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",

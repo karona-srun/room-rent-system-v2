@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use App\Models\Invoice;
 use App\Models\Room;
 use App\Models\RoomRent;
+use App\Services\TelegramBot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use KhmerDateTime\KhmerDateTime;
+use Telegram\Bot\Exceptions\TelegramOtherException;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class InvoiceController extends Controller
 {
@@ -23,8 +27,8 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with('room')
             ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
-            ->select('invoices.*', 'rooms.name as room_name','rooms.id as room_id')
-            ->orderBy('rooms.name', 'asc') 
+            ->select('invoices.*', 'rooms.name as room_name', 'rooms.id as room_id')
+            ->orderBy('rooms.name', 'asc')
             ->get();
         return view('invoice.index', ['invoice' => $invoice]);
     }
@@ -35,19 +39,17 @@ class InvoiceController extends Controller
     public function create()
     {
         $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::whereIn('id',$roomRents)->orderBy('name')->get();
+        $rooms = Room::whereIn('id', $roomRents)->orderBy('name')->get();
         $apart = Apartment::find(Auth::user()->apartment_id);
-        return view('invoice.create',['rooms' => $rooms,'apart' => $apart]);
+        return view('invoice.create', ['rooms' => $rooms, 'apart' => $apart]);
     }
 
     public function invoiceNo()
     {
-        $latest = Invoice::latest()->first();
-        if (!$latest) {
-            return 'INV'.now()->format('dmy').'-'.'0001';
-        }
-        $string = preg_replace("/[^0-9\.]/", '', $latest->invoice_no);
-        return 'INV'.now()->format('dmy').'-'. sprintf('%04d', $string + 1);
+        $invoiceCount = Invoice::count();
+        $nextInvoiceNumber = $invoiceCount + 1;
+        $invoiceNo = 'INV-' . str_pad($nextInvoiceNumber, 6, '0', STR_PAD_LEFT);
+        return $invoiceNo;
     }
 
     /**
@@ -59,13 +61,13 @@ class InvoiceController extends Controller
             'room_cost' => 'required',
             'electric_cost' => 'required',
             'sub_total_amount' => 'required',
-        ],[
-            'room_cost.required' => __('app.label_choose_room').__('app.label_required'),
-            'electric_cost.required' => __('app.invoice_eletrotic_cost').__('app.label_required'),
+        ], [
+            'room_cost.required' => __('app.label_choose_room') . __('app.label_required'),
+            'electric_cost.required' => __('app.invoice_eletrotic_cost') . __('app.label_required'),
             'sub_total_amount.required' => __('app.label_calculator')
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
@@ -73,7 +75,7 @@ class InvoiceController extends Controller
         $invoice->is_paid = 0;
         $invoice->is_screenshot = 0; // Not yet
         $invoice->invoice_no = $this->invoiceNo();
-        $invoice->invoice_date = $request->day.'-'.$request->month.'-'.$request->year;
+        $invoice->invoice_date = $request->day . '-' . $request->month . '-' . $request->year;
         $invoice->room_rent_id = $request->room;
         $invoice->room_cost = $request->room_cost;
         $invoice->electric_cost = $request->electric_cost;
@@ -87,10 +89,10 @@ class InvoiceController extends Controller
         $invoice->terms_and_conditions = $request->terms_and_conditions;
         $invoice->save();
 
-        if($request->saveAndCreate == "new"){
-            return redirect('/invoice/create')->with('success',__('app.label_created_successfully'));
-        }else{
-            return redirect('/invoice')->with('success',__('app.label_created_successfully'));
+        if ($request->saveAndCreate == "new") {
+            return redirect('/invoice/create')->with('success', __('app.label_created_successfully'));
+        } else {
+            return redirect('/invoice')->with('success', __('app.label_created_successfully'));
         }
     }
 
@@ -109,9 +111,9 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($invoice->id);
         $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::whereIn('id',$roomRents)->orderBy('name')->get();
+        $rooms = Room::whereIn('id', $roomRents)->orderBy('name')->get();
         $apart = Apartment::find(Auth::user()->apartment_id);
-        return view('invoice.edit',['rooms' => $rooms,'apart' => $apart, 'invoice' => $invoice]);
+        return view('invoice.edit', ['rooms' => $rooms, 'apart' => $apart, 'invoice' => $invoice]);
     }
 
     /**
@@ -123,20 +125,20 @@ class InvoiceController extends Controller
             'room_cost' => 'required',
             'electric_cost' => 'required',
             'sub_total_amount' => 'required',
-        ],[
-            'room_cost.required' => __('app.label_choose_room').__('app.label_required'),
-            'electric_cost.required' => __('app.invoice_eletrotic_cost').__('app.label_required'),
+        ], [
+            'room_cost.required' => __('app.label_choose_room') . __('app.label_required'),
+            'electric_cost.required' => __('app.invoice_eletrotic_cost') . __('app.label_required'),
             'sub_total_amount.required' => __('app.label_calculator')
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
         $invoice = Invoice::find($id);
         $invoice->is_screenshot = 0; // Not yet
         $invoice->invoice_no = $this->invoiceNo();
-        $invoice->invoice_date = $request->day.'-'.$request->month.'-'.$request->year;
+        $invoice->invoice_date = $request->day . '-' . $request->month . '-' . $request->year;
         $invoice->room_rent_id = $request->room;
         $invoice->room_cost = $request->room_cost;
         $invoice->electric_cost = $request->electric_cost;
@@ -150,13 +152,13 @@ class InvoiceController extends Controller
         $invoice->terms_and_conditions = $request->terms_and_conditions;
         $invoice->save();
 
-        return redirect('/invoice')->with('success',__('app.label_updated_successfully'));
+        return redirect('/invoice')->with('success', __('app.label_updated_successfully'));
     }
 
     public function pay($id)
     {
         $invoice = Invoice::find($id);
-        $invoice->is_paid = $invoice->is_paid == 0 ? 1:0;
+        $invoice->is_paid = $invoice->is_paid == 0 ? 1 : 0;
         $invoice->save();
         return redirect('/invoice');
     }
@@ -164,38 +166,67 @@ class InvoiceController extends Controller
     public function print($id)
     {
         $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::whereIn('id',$roomRents)->orderBy('name')->get();
+        $rooms = Room::whereIn('id', $roomRents)->orderBy('name')->get();
         $apart = Apartment::find(Auth::user()->apartment_id);
         $invoice = Invoice::find($id);
-        return view('invoice.print',['invoice' => $invoice, 'rooms' => $rooms,'apart' => $apart]);
+        return view('invoice.print', ['invoice' => $invoice, 'rooms' => $rooms, 'apart' => $apart]);
     }
 
     public function screenshot($id)
     {
         $invoice = Invoice::find($id);
         $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::whereIn('id',$roomRents)->orderBy('name')->get();
+        $rooms = Room::whereIn('id', $roomRents)->orderBy('name')->get();
         $apart = Apartment::find(Auth::user()->apartment_id);
-        View::share(['rooms' => $rooms,'apart' => $apart, 'invoice' => $invoice]);
-        return view('invoice.screenshot',['rooms' => $rooms,'apart' => $apart, 'invoice' => $invoice]);
+        View::share(['rooms' => $rooms, 'apart' => $apart, 'invoice' => $invoice]);
+        return view('invoice.screenshot', ['rooms' => $rooms, 'apart' => $apart, 'invoice' => $invoice]);
     }
 
     public function saveScreenshot(Request $request)
     {
         Log::info($request->base64data);
-        $image = $request->base64data;  
+        $image = $request->base64data;
         $image_parts = explode(";base64,", $image);
         $image_base64 = base64_decode($image_parts[1]);
-        $filename = "invoice_room_" . $request->id . "_month_" . date('m') . ".jpg";
+        $filename = $request->invoice_no . ".jpg";
         $file = $filename;
 
-        Storage::disk('invoices')->put($file,$image_base64);
+        Storage::disk('invoices')->put($file, $image_base64);
 
         $invoice = Invoice::find($request->id);
         $invoice->is_screenshot = 1; // Done
         $invoice->save();
 
         return redirect('/invoice')->with('success', __('app.label_screenshot_successfully'));
+    }
+
+    public function send($id)
+    {
+        try {
+            $invoice = Invoice::find($id);
+            $telegramBot = new TelegramBot();
+
+            $groupId = RoomRent::where("room_id", $invoice->room_rent_id)->pluck('telegram_id');
+            $message = $invoice->invoice_no . ', ' . KhmerDateTime::parse(now())->format("LLLLT");
+            $telegramBot->sendMessagePhoto($groupId, $invoice->invoice_no, $message);
+
+            $invoice->telegram_message = "done";
+            $invoice->telegram_message_at = now();
+            $invoice->save();
+        } catch (TelegramOtherException $e) {
+            Log::error("Error ** Send Invoice ** " . $e->getMessage());
+        }
+        
+        return redirect('/invoice')->with('success', __('app.label_sent_successfully'));
+    }
+
+    public function sendAll(Request $request)
+    {
+        foreach ($request->select_room_id as $id) {
+            $this->send($id);
+        }
+
+        return redirect('/invoice')->with('success', __('app.label_sent_successfully'));
     }
 
     /**

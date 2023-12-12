@@ -36,7 +36,9 @@
                                     <td>{{ $item->room->price }}</td>
                                     <td>{{ $item->customer_name }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{!! $item->telegram_id ? "<label class='text-primary'><i class='typcn typcn-arrow-maximise text-primary me-1'></i>".__('app.btn_connected')."</label>" : "<label class='text-danger'><i class='typcn typcn-arrow-maximise text-danger me-1'></i>".__('app.btn_disconnect')."</label>" !!}</td>
+                                    <td>
+                                        <span class=" badge {{ $item->telegram_id != "" ? 'badge-inverse-success' : 'badge-inverse-danger' }}"><i class="fas {{ $item->telegram_id != "" ? "fa-check-circle":"fa-ban" }}"></i> {{ $item->telegram_id != "" ? __('app.btn_connected') :__('app.btn_disconnect') }}</span>
+                                    </td>
                                     <td>
                                         <div class="btn-icon-list">
                                             <a href="{{ url('room-rent/'.$item->room_rent_id.'/edit') }}" class="btn btn-indigo btn-icon me-2"><i

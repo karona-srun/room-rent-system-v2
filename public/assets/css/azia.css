@@ -21011,7 +21011,7 @@ body {
   .az-chat-body {
     padding-bottom: 0;
     height: calc(100% - 105px);
-    overflow: hidden;
+    overflow: auto;
   }
 }
 .az-chat-body .content-inner {

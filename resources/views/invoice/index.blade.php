@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="row row-sm mg-b-20 mg-lg-b-0">
+    <div class="row row-sm mg-b-20 mg-lg-b-0 mb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body bd bd-t-0">
@@ -16,6 +16,7 @@
                         </div>
                     </div>
                     <form action="{{ url('invoice/send-all') }}" method="post">
+                        @csrf
                         <div class="row mb-2">
                             <div class="col-sm-12">
                                 <button type="submit" class="btn btn-primary">{{ __('app.btn_send_all') }}</button>
@@ -25,7 +26,11 @@
                             style="min-width: -webkit-fill-available !important;">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>
+                                        <input type="checkbox"
+                                            class="form-check form-check-input-custom form-check-input checkAll"
+                                            name="id">
+                                    </th>
                                     <th>{{ __('app.label_no') }}</th>
                                     <th class="wd-10p">{{ __('app.menu_room') }}</th>
                                     <th>{{ __('app.label_invoice_date') }}</th>
@@ -33,7 +38,7 @@
                                     <th class="wd-20p sorting">{{ __('app.label_total_amount') }}</th>
                                     <th class="wd-20p sorting">{{ __('app.label_status_pay') }}</th>
                                     <th class="wd-20p sorting">{{ __('app.label_screenshot') }}</th>
-                                    <th class="wd-20p">{{__('app.label_send_at')}}</th>
+                                    <th class="wd-20p">{{__('app.label_send_noted')}}</th>
                                     <th class=""></th>
                                 </tr>
                             </thead>
@@ -42,7 +47,7 @@
                                     <tr>
                                         <td class="dtr-control">
                                             <input type="checkbox"
-                                                class="form-check form-check-input-custom form-check-input"
+                                                class="form-check form-check-input-custom form-check-input checkOne"
                                                 name="select_room_id[]" value="{{ $item->id }}">
                                         </td>
                                         <td>{{ ++$key }}</td>
@@ -60,7 +65,11 @@
                                             <span
                                                 class="badge {{ $item->is_screenshot == 0 ? 'badge-warning' : 'badge-success' }}">{{ $item->is_screenshot == 0 ? __('app.label_not_yet') : __('app.label_done') }}</span>
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <span class="badge badge-info mb-1"><i class=" typcn typcn-input-checked"></i> {{ $item->telegram_message == 'done' ? 'ផ្ញើរួច' : 'នៅទេ' }}</span>
+                                            <br>
+                                            <span class="badge badge-primary"><i class=" typcn typcn-time"></i> {{ $item->telegram_message_at == "" ? "" : KhmerDateTime\KhmerDateTime::parse($item->telegram_message_at)->format('LLLLT') }}</span>
+                                        </td>
                                         <td>
                                             <div class="btn-icon-list">
                                                 <a href="{{ url('invoice/pay/' . $item->id) }}"

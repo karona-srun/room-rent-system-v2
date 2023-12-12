@@ -58,7 +58,7 @@ return [
 
         'invoices' => [
             'driver' => 'local',
-            'root' => public_path('/invoices'),
+            'root' => public_path(),
         ],
 
     ],

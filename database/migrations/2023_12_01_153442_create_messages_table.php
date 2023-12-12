@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('telegram_message')->nullable();
+            $table->string('telegram_message_at')->nullable();
             $table->json('room_rent_id');
             $table->string('user_id')->nullable();
             $table->string('apartment_id')->nullable();
             $table->longText('message');
-            $table->string('sent_to')->nullable();
-            $table->string('sent_at')->nullable();
             $table->timestamps();
         });
     }
