@@ -95,16 +95,35 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3 mt-2">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-header">{{__('app.label_date_info')}}</div>
+                                                    <div class="card-body">
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-6 mb-2">
+                                                                <label class="form-label">{{ __('app.label_apart_start_date') }}</label>
+                                                                <input type="number" class="form-control" name="start_date" value="{{ $apart->start_date }}"/>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label class="form-label">{{ __('app.label_apart_end_date') }}</label>
+                                                                <input type="number" class="form-control" name="end_date" value="{{ $apart->end_date }}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12 mb-2">
+                                                                <label
+                                                                    class="form-label">{{ __('app.label_terms_and_conditions') }}</label>
+                                                                <textarea class="form-control" rows="3" name="terms_and_conditions">{{ $apart->terms_and_conditions }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 mt-2">
                                             <div class="col-sm-12 mb-2">
                                                 <label class="form-label">{{ __('app.label_address') }}</label>
                                                 <textarea class="form-control" rows="3" name="address">{{ $apart->address }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-12 mb-2">
-                                                <label
-                                                    class="form-label">{{ __('app.label_terms_and_conditions') }}</label>
-                                                <textarea class="form-control" rows="3" name="terms_and_conditions">{{ $apart->terms_and_conditions }}</textarea>
                                             </div>
                                         </div>
                                         <div class="row mb-3">

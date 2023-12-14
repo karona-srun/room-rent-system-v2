@@ -25,6 +25,7 @@ return new class extends Migration
             $table->bigInteger('water_old_number')->nullable();
             $table->bigInteger('water_new_number')->nullable();
             $table->double('water_cost')->nullable();
+            $table->double('trash_cost')->nullable();
             $table->longText('other')->nullable();
             $table->string('sub_total_amount');
             $table->string('total_amount');

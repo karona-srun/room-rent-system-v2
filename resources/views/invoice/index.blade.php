@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>
                                         <input type="checkbox"
-                                            class="form-check form-check-input-custom form-check-input checkAll"
+                                            class="form-check-input text-center checkAll"
                                             name="id">
                                     </th>
                                     <th>{{ __('app.label_no') }}</th>

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use KhmerDateTime\KhmerDateTime;
 use Telegram\Bot\Exceptions\TelegramOtherException;
+use Telegram\Bot\FileUpload\InputMedia;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class InvoiceController extends Controller
@@ -82,6 +83,7 @@ class InvoiceController extends Controller
         $invoice->water_old_number = $request->old_number;
         $invoice->water_new_number = $request->new_number;
         $invoice->water_cost = $request->water_cost;
+        $invoice->trash_cost = $request->trash_cost;
         $invoice->other = $request->other;
         $invoice->sub_total_amount = $request->sub_total_amount;
         $invoice->total_amount = $request->total_amount;
@@ -145,6 +147,7 @@ class InvoiceController extends Controller
         $invoice->water_old_number = $request->old_number;
         $invoice->water_new_number = $request->new_number;
         $invoice->water_cost = $request->water_cost;
+        $invoice->trash_cost = $request->trash_cost;
         $invoice->other = $request->other;
         $invoice->sub_total_amount = $request->sub_total_amount;
         $invoice->total_amount = $request->total_amount;

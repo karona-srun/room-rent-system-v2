@@ -186,6 +186,7 @@
     <script src="{{ asset('assets/lib/datatables.net-responsive-dt/js/responsive.dataTables.js') }}"></script>
     <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/azia.js') }}"></script>
+    <script src="{{ asset('assets/js/chart.chartjs.js') }}"></script>
     <script>
         $(function() {
 

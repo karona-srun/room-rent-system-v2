@@ -6,6 +6,8 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Telegram\Bot\FileUpload\InputFile;
+use Telegram\Bot\Objects\InputMedia\InputMediaDocument;
+use Telegram\Bot\FileUpload\InputMedia;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramBot
@@ -50,12 +52,12 @@ class TelegramBot
         ]);
     }
 
-    public function sendMessagePhoto($groupId, $path ,$message)
+    public function sendMessagePhoto($groupId, $path, $message)
     {
         Telegram::setTimeOut(30);
         $response = Telegram::sendPhoto([
             'chat_id' => $groupId[0],
-            'photo' => InputFile::create(public_path().'/'. $path.".jpg"),
+            'photo' => InputFile::create(public_path() . '/' . $path . ".jpg"),
             'caption' => $message,
             'parse_mode' => 'html',
             'text' => $message,
@@ -66,7 +68,6 @@ class TelegramBot
 
     public function editMessagePhoto($groupId, $messageId, $message)
     {
-
     }
 
     public function deleteMessagePhoto($groupId, $messageId)
@@ -75,5 +76,39 @@ class TelegramBot
             'chat_id' => $groupId,
             'message_id' => $messageId,
         ]);
+    }
+
+    public function sendMessageGroupPhone($groupId, $path, $message)
+    {
+        $photo1 = InputMedia::createPhoto([
+            'type' => 'photo',
+            'media' => InputFile::create(public_path() . '/' . $path . ".jpg"),
+            'caption' => $message,
+        ]);
+
+        $photo2 = InputMedia::createPhoto([
+            'type' => 'photo',
+            'media' => InputFile::create(public_path() . "/QRcode.png"),
+            'caption' => 'QR Code ស្កេនដើម្បីទូទាត់វិក័យប័ត្រ',
+            'has_spoiler' => true
+        ]);
+
+        $response = Telegram::sendMediaGroup([
+            'chat_id' => $groupId[0],
+            'media' => [
+                $photo1,
+                $photo2,
+            ],
+            'caption_entities' => [
+                'phone_number' => '+85596773007'
+            ]
+        ]);
+
+        if ($response->isOk()) {
+            return $response;
+        } else {
+            // Failed to send media group
+            return "Failed to send media group: " . $response->getDescription();
+        }
     }
 }

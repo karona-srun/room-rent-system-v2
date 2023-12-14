@@ -64,6 +64,8 @@ class ApartmentController extends Controller
         $apartment->trash_cost = $request->trash_cost;
         $apartment->address = $request->address;
         $apartment->noted = $request->noted;
+        $apartment->start_date = $request->start_date;
+        $apartment->end_date = $request->end_date;
         $apartment->terms_and_conditions = $request->terms_and_conditions;
         $apartment->save();
 
@@ -127,6 +129,8 @@ class ApartmentController extends Controller
         $apartment->trash_cost = $request->trash_cost;
         $apartment->address = $request->address;
         $apartment->noted = $request->noted;
+        $apartment->start_date = $request->start_date;
+        $apartment->end_date = $request->end_date;
         $apartment->terms_and_conditions = $request->terms_and_conditions;
         $apartment->save();
             

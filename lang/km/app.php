@@ -34,6 +34,14 @@ return [
     'menu_setting' => 'ការកំណត់',
     'menu_user' => 'អ្នកប្រើប្រាស់',
     'menu_setting_system' => 'កំណត់ព័ត៍មាន',
+    'label_info_monthly' => 'ព៍ត័មានប្រចាំខែ',
+    'label_count_room' => 'ចំនួនបន្ទប់',
+    'label_count_room_rent' => 'ចំនួនបន្ទប់ជួល',
+    'label_count_user' => 'ចំនួនអ្នកប្រើប្រាស់',
+    'label_info_detail' => 'ព៍ត័មានបន្ថែម',
+    'label_info_summary' => 'ព៍ត័មានសង្ខេបរបស់ស៊ីស្ទឹល',
+    'label_income_as_riel' => 'ចំណូលគិតជាលុយរៀល',
+    'label_income_as_dollar' => 'ចំណូលគិតជាលុយដុល្លា',
 
     // Room page
     'label_table_room_info' => 'ការស្វែងរក ការតម្រៀបទិន្នន័យ និងបន្ថែមភ្លាមៗទៅក្នុងតារាង ដូចដែលបានបង្ហាញក្នុងបញ្ជី',
@@ -84,6 +92,9 @@ return [
     'label_edit_apartment' => 'កែសម្រួលព័ត៍មានអាគារ',
     'label_terms_and_conditions' => 'លក្ខខ័ណ្ឌ និងកិច្ចព្រមព្រៀង',
     'label_create_apartment_info' => 'បំពេញព័ត៍មានអាគារអោយបានត្រឹមត្រូវ',
+    'label_date_info' => 'កំណត់កាលបរិច្ឆេទត្រូវបង្ហាញវិក័យប័ត្រ',
+    'label_apart_start_date' => 'កំណត់ថ្ងៃចាប់ផ្តើម',
+    'label_apart_end_date' => 'កំណត់ថ្ងៃបញ្ចប់',
 
     // Massage page
     'label_message_table' => 'តារាងផ្ញើសារ',
