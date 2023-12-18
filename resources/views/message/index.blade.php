@@ -6,11 +6,11 @@
             <div class="card">
                 <div class="card-body bd bd-t-0">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                             <div class="az-content-label mg-b-5">{{ __('app.label_message_table') }}</div>
-                            <p class="mg-b-20">{{ __('app.label_table_room_info') }}</p>
+                            <p>{{ __('app.label_table_room_info') }} <br><strong>{{__('app.label_noted')}}៖</strong><br> - {{__('app.label_message_info')}}</p>
                         </div>
-                        <div class="col-sm-6 float-right">
+                        <div class="col-sm-4 float-right">
                             <a href="{{ url('message/create') }}"​ class="btn btn-az-secondary">{{ __('app.btn_new') }}</a>
                         </div>
                     </div>

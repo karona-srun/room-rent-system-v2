@@ -62,7 +62,7 @@
                         <div class="card-header">{{__('app.label_info_monthly'). __('app.label_income_as_riel') }}<span class="text-danger">[៛]</span></div>
                         <div class="card-body">
                             <h3 class="text-start">{{$data['total_riel']}}</h3>
-                            <a href="{{url('/user')}}" class="btn btn-block btn-sm text-white btn-outline-primary">{{__('app.label_info_detail')}}</a>
+                            <a href="{{url('/invoice')}}" class="btn btn-block btn-sm text-white btn-outline-primary">{{__('app.label_info_detail')}}</a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                         <div class="card-header">{{__('app.label_info_monthly'). __('app.label_income_as_dollar')}}<span class="text-danger">[$]</span></div>
                         <div class="card-body">
                             <h3 class="text-start">{{$data['total_dollar']}}</h3>
-                            <a href="{{url('/user')}}" class="btn btn-block text-white btn-sm btn-outline-primary">{{__('app.label_info_detail')}}</a>
+                            <a href="{{url('/invoice')}}" class="btn btn-block text-white btn-sm btn-outline-primary">{{__('app.label_info_detail')}}</a>
                         </div>
                     </div>
                 </div>

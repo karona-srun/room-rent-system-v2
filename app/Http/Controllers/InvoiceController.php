@@ -7,8 +7,10 @@ use App\Models\Invoice;
 use App\Models\Room;
 use App\Models\RoomRent;
 use App\Services\TelegramBot;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -24,14 +26,34 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $keyword = $request->keyword;
+        $start = $request->start_date == '' ? Carbon::parse(date('y-m-d'))->startOfMonth() : $request->start_date .' 00:00:00'; 
+        $end = $request->end_date == '' ? Carbon::parse(date('y-m-d'))->endOfMonth() : $request->end_date .' 23:59:59';
+
         $invoice = Invoice::with('room')
-            ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
-            ->select('invoices.*', 'rooms.name as room_name', 'rooms.id as room_id')
-            ->orderBy('rooms.name', 'asc')
-            ->get();
-        return view('invoice.index', ['invoice' => $invoice]);
+        ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
+        ->select('invoices.*', 'rooms.name as room_name', 'rooms.id as room_id','rooms.created_at as rCreated_at', 'rooms.updated_at as rUpdated_at')
+        ->orderBy('rooms.name', 'asc');
+
+        if ($start && $end) {
+            $invoice->where(function ($query) use ($start, $end) {
+                $query->whereBetween('invoices.created_at', [$start, $end]);
+            });
+        }
+        if ($keyword) {
+            $invoice->where(function ($query) use ($keyword) {
+                $query->where('rooms.name','LIKE', '%'. $keyword .'%')
+                      ->orwhere('invoices.invoice_no','LIKE', '%'. $keyword .'%');
+            });
+        }
+
+        $apart = Apartment::find(Auth::user()->apartment->id);
+        $invoice = $invoice->get();
+
+        return view('invoice.index', ['invoice' => $invoice, 'apart' => $apart]);
     }
 
     /**

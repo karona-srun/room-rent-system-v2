@@ -9,6 +9,7 @@ use Telegram\Bot\FileUpload\InputFile;
 use Telegram\Bot\Objects\InputMedia\InputMediaDocument;
 use Telegram\Bot\FileUpload\InputMedia;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Telegram\Bot\Objects\InputMedia\InputMedia as InputMediaInputMedia;
 
 class TelegramBot
 {
@@ -80,13 +81,13 @@ class TelegramBot
 
     public function sendMessageGroupPhone($groupId, $path, $message)
     {
-        $photo1 = InputMedia::createPhoto([
+        $photo1 = InputMediaInputMedia::createPhoto([
             'type' => 'photo',
             'media' => InputFile::create(public_path() . '/' . $path . ".jpg"),
             'caption' => $message,
         ]);
 
-        $photo2 = InputMedia::createPhoto([
+        $photo2 = InputMediaInputMedia::createPhoto([
             'type' => 'photo',
             'media' => InputFile::create(public_path() . "/QRcode.png"),
             'caption' => 'QR Code ស្កេនដើម្បីទូទាត់វិក័យប័ត្រ',

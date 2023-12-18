@@ -22,13 +22,13 @@
     <link href="{{ asset('assets/lib/datatables.net-dt/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }}"
         rel="stylesheet">
-
+    @yield('css')
     <link href="{{ asset('assets/lib/lightslider/css/lightslider.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/select2/css/select2.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/azia.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Siemreap" rel="stylesheet">
-    @yield('css')
+    
     <style>
         html body {
             font-family: 'Siemreap' !important;
@@ -123,7 +123,7 @@
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ url('invoice') }}" class="nav-sub-link active">
                                 {{ __('app.menu_invoice_list') }}</a></li>
-                        <li class="nav-sub-item"><a href="elem-alerts.html" class="nav-sub-link">
+                        <li class="nav-sub-item"><a href="{{ url('invoice') }}" class="nav-sub-link">
                                 {{ __('app.menu_search_invoice') }}</a></li>
                     </ul>
                 </li><!-- nav-item -->
@@ -175,7 +175,7 @@
     <script src="{{ asset('assets/lib/jquery.flot/jquery.flot.resize.js') }}"></script>
     <script src="{{ asset('assets/lib/chart.js/Chart.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/lib/peity/jquery.peity.min.js') }}"></script>
-
+    @yield('js')
     <script src="{{ asset('assets/lib/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/lib/lightslider/js/lightslider.min.js') }}"></script>
     <script src="{{ asset('assets/js/dashboard.sampledata.js') }}"></script>
@@ -187,6 +187,7 @@
     <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/azia.js') }}"></script>
     <script src="{{ asset('assets/js/chart.chartjs.js') }}"></script>
+
     <script>
         $(function() {
 
@@ -401,7 +402,6 @@
         }
         setInterval(showTime, 1000);
     </script>
-    @yield('js')
 </body>
 
 </html>
