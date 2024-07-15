@@ -158,8 +158,9 @@ select .select-control-custom-option option .select-control-custom-option {
 
 .input-group-append
 {
-    line-height: -1;
+    line-height: 2.5;
     font-size: 0.9rem;
+    padding: 0 2px;
 }
 
 .input-group-text, .input-group{

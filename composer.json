@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "league/uri": "^6.0.0",
+        "magarrent/laravel-currency-formatter": "^1.0",
         "phannaly/php-datetime-khmer": "^1.0",
         "psr/log": "^2.0"
     },

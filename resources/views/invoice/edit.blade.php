@@ -118,7 +118,7 @@
                                         </div>
                                         
                                     </div>
-
+                                    @if($apart->water_module)
                                     <div class="row mb-4">
                                         <div class="col-sm-5 mb-4">
                                             <div class="input-group">
@@ -157,7 +157,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    @endif
                                     <div class="row mb-4">
                                         <div class="col-sm-12 mb-4">
                                             <div class="input-group">

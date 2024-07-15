@@ -10,4 +10,9 @@ class Room extends Model
 {
     use HasFactory, HasUuids;
 
+    public function roomRent()
+    {
+        return $this->hasManyThrough(RoomRent::class, Room::class,'rent_id','room_id');
+    }
+
 }

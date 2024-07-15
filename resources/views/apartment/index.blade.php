@@ -30,7 +30,7 @@
                                         class="text-danger">[៛]</span></th>
                                 <th class="wd-25p sorting">{{ __('app.trash_cost') }} <span class="text-danger">[៛]</span>
                                 </th>
-                                <th>{{ __('app.label_address') }}</th>
+                                <th class="wd-20p">{{__('app.label_water_module')}}</th>
                                 <th class="wd-15p"></th>
                             </tr>
                         </thead>
@@ -44,7 +44,9 @@
                                     <td>{{ $item->exchange_riel }}</td>
                                     <td>{{ $item->water_cost }}</td>
                                     <td>{{ $item->trash_cost }}</td>
-                                    <td>{{ $item->address }}</td>
+                                    <td>
+                                        <div class="az-toggle az-toggle-success {{ $item->water_module ? 'on' :' '}}" data-id="{{ $item->id }}" data-module="{{ $item->water_module }}"><span></span></div> 
+                                    </td>
                                     <td>
                                         <div class="btn-icon-list">
                                             <a href="{{ url('apartment/' . $item->id . '/edit') }}"

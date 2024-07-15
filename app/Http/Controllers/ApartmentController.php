@@ -60,6 +60,8 @@ class ApartmentController extends Controller
         }
         
         $apartment->exchange_riel = $request->exchange_riel;
+        $apartment->water_module = $request->water_module;
+        $apartment->token = $request->token;
         $apartment->water_cost = $request->water_cost;
         $apartment->trash_cost = $request->trash_cost;
         $apartment->address = $request->address;
@@ -125,6 +127,8 @@ class ApartmentController extends Controller
         }
         
         $apartment->exchange_riel = $request->exchange_riel;
+        $apartment->water_module = $request->water_module;
+        $apartment->token = $request->token;
         $apartment->water_cost = $request->water_cost;
         $apartment->trash_cost = $request->trash_cost;
         $apartment->address = $request->address;
@@ -136,6 +140,17 @@ class ApartmentController extends Controller
             
         return redirect('/apartment')->with('success',__('app.label_updated_successfully'));
     
+    }
+
+    public function waterModule($id)
+    {
+        $apartment = Apartment::findOrFail($id);
+        $apartment->water_module = $apartment->water_module ? false : true;
+        $apartment->save();
+        $data = [
+            'success' => true
+        ];
+        return response()->json($data);
     }
 
     /**

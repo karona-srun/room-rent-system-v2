@@ -10,8 +10,15 @@ class Invoice extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $appends = ['room_name'];
+
     public function room()
     {
         return $this->belongsTo(Room::class,'room_rent_id');
     }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class,'id','room_rent_id');
+    } 
 }

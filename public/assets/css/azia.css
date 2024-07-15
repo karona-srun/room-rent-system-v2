@@ -862,12 +862,12 @@ progress {
 }
 @media (min-width: 1200px) {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1120px;
+    max-width: 1220px;
   }
 }
 @media (min-width: 1400px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1140px;
+    max-width: 1240px;
   }
 }
 :root {
@@ -3506,7 +3506,7 @@ textarea.form-check-input.parsley-error ~ .form-check-label {
   --bs-dropdown-link-hover-color: var(--bs-body-color);
   --bs-dropdown-link-hover-bg: var(--bs-tertiary-bg);
   --bs-dropdown-link-active-color: #fff;
-  --bs-dropdown-link-active-bg: #3366ff;
+  --bs-dropdown-link-active-bg: #7987a1;
   --bs-dropdown-link-disabled-color: var(--bs-tertiary-color);
   --bs-dropdown-item-padding-x: 1rem;
   --bs-dropdown-item-padding-y: 0.25rem;
@@ -17028,7 +17028,7 @@ body {
   font-weight: 700;
   font-size: 28px;
   font-family: "Poppins", sans-serif;
-  text-transform: lowercase;
+  text-transform: none;
   color: #5b47fb;
   letter-spacing: -1px;
   display: flex;

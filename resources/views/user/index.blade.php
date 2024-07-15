@@ -37,7 +37,11 @@
                                     <td><img src="{{ asset('assets' . $item->image) }}" class=" img-xs img-circle"></td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
-                                    <td>{{ $item->apartment->name }}</td>
+                                    <td>
+                                        @foreach ($item->apartments as $apart)
+                                        <span class="badge badge-primary">{{ $apart->name }}</span>
+                                        @endforeach
+                                    </td>
                                     <td><span
                                             class="badge {{ $item->is_active == 0 ? 'badge-danger' : 'badge-success' }}">{{ $item->is_active ? __('app.label_user_active') : __('app.label_user_inactive') }}</span>
                                     </td>

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('apartments', function (Blueprint $table) {
-            $table->string('start_date')->nullable()->after('parking_cost');
-            $table->string('end_date')->nullable()->after('start_date');
+            $table->string('token')->nullable()->after('start_date');
+            $table->boolean('water_module')->nullable()->after('token');
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('apartments', function (Blueprint $table) {
             $table->dropColumn('start_date');
-            $table->dropColumn('end_date');
+            $table->dropColumn('water_module');
         });
     }
 };

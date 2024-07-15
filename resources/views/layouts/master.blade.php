@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/azia.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Siemreap" rel="stylesheet">
-    
+
     <style>
         html body {
             font-family: 'Siemreap' !important;
@@ -48,10 +48,19 @@
                 <button class="btn"><i class="fas fa-search"></i></button> --}}
             </div><!-- az-header-center -->
             <div class="az-header-right">
+                <div class="dropdown az-profile-menu">
+                    <a href="" class="me-3 text-white" style="text-decoration: none;"> ទីតាំង៖ {{ Auth::user()->apartment->name }} <i class="typcn typcn-arrow-sorted-down"></i></a>
+                        <div class="dropdown-menu">
+                            @foreach (Auth::user()->apartments as $apart)
+                                <a href="{{ url('/change-apartment',$apart->id) }}" class="dropdown-item"><i class="typcn typcn-home"></i>
+                                {{ $apart->name }}</a>
+                            @endforeach
+                        </div>
+                </div>
                 <div class="az-header-message">
                     <a href="#"><small id="date">ថ្ងៃពុធ 29 វិច្ឆិកា 2023</small> <small
                             id="time">1:35:24 ល្ងាច</small></a>
-                </div><!-- az-header-message -->
+                </div>
                 <div class="dropdown az-profile-menu">
                     <a href="" class="az-img-user"><img src="{{ asset('assets' . Auth::user()->image) }}"
                             alt=""></a>
@@ -123,7 +132,7 @@
                     <ul class="nav-sub">
                         <li class="nav-sub-item"><a href="{{ url('invoice') }}" class="nav-sub-link active">
                                 {{ __('app.menu_invoice_list') }}</a></li>
-                        <li class="nav-sub-item"><a href="{{ url('invoice') }}" class="nav-sub-link">
+                        <li class="nav-sub-item"><a href="{{ url('invoice-search') }}" class="nav-sub-link">
                                 {{ __('app.menu_search_invoice') }}</a></li>
                     </ul>
                 </li><!-- nav-item -->
@@ -145,7 +154,7 @@
 
     <div class="az-content az-content-dashboard">
         <div class="container">
-            <div class="az-content-body">
+            <div class="az-content-body mb-5">
                 <div class="az-dashboard-one-title">
                     <div>
                         <h2 class="az-dashboard-title">{{ __('app.label_hi') }} {{ __('app.label_welcome') }}</h2>
@@ -187,9 +196,35 @@
     <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/azia.js') }}"></script>
     <script src="{{ asset('assets/js/chart.chartjs.js') }}"></script>
-
+    @yield('js')
     <script>
         $(function() {
+
+            // Toggle Switches
+            $('.az-toggle').on('click', function(e){
+                $(this).toggleClass('on');
+                var id = $(this).attr('data-id')
+                console.log($(this).attr('data-module'));
+                console.log($(this).attr('data-id'));
+                var id = $(this).data("id")
+                e.preventDefault();
+                $.ajax({
+                    url: "/water-module/"+id,
+                    type: "get",
+                    cache: false,
+                    success: function(data){
+                        console.log(data)
+                        if(data.success == true){ // if true (1)
+                            // setTimeout(function(){// wait for 5 secs(2)
+                            //     location.reload(); // then reload the page.(3)
+                            // }, 1000);
+                        }
+                    },
+                    error: function(msg){
+                        console.log(msg)
+                    }
+                });
+            })
 
             $('.checkAll').click(function() {
                 if ($(this).prop('checked')) {
@@ -327,7 +362,7 @@
             });
 
             $('.btn-cal').click(function() {
-                var water_cost = $('.water_cost').val();
+                var water_cost = $('.water_cost').val() ?? 0;
                 var trash_cost = $('.trash_cost').val();
                 var room_cost = $('.room_cost').val();
                 var eletrotic_cost = $('.electric_cost').val();

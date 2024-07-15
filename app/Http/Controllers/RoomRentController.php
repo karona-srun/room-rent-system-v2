@@ -15,7 +15,7 @@ class RoomRentController extends Controller
      */
     public function index()
     {
-        $roomRents = RoomRent::with('room')
+        $roomRents = RoomRent::with('room')->where('room_rents.apartment_id',Auth::user()->apartment_id)
             ->join('rooms', 'room_rents.room_id', '=', 'rooms.id')
             ->select('room_rents.*', 'room_rents.id as room_rent_id')
             ->orderBy('rooms.name', 'asc') 
@@ -30,7 +30,7 @@ class RoomRentController extends Controller
     public function create()
     {
         $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::where('status', 'Free')->whereNotIn('id',$roomRents)->orderBy('name')->get();
+        $rooms = Room::where('status', 'Free')->where('apartment_id',Auth::user()->apartment_id)->whereNotIn('id',$roomRents)->orderBy('name')->get();
         
         $telegramBot = new TelegramBot();
         $listGroups = $telegramBot->listGroup();
@@ -57,16 +57,20 @@ class RoomRentController extends Controller
         if ($request->file('photo_front')) {
             $file = $request->file('photo_front');
             $filename = $request->phone . '_' . date('YmdHi') . str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move(public_path('images/card_id/'), $filename);
-            $roomRent->photo_front = 'images/card_id/' . $filename;
+            $file->move(public_path('images/card/'), $filename);
+            $roomRent->image_front = 'images/card/' . $filename;
         }
 
         if ($request->file('photo_back')) {
             $file = $request->file('photo_back');
             $filename =  $request->phone . '_' . date('YmdHi') . str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move(public_path('images/card_id'), $filename);
-            $roomRent->photo_back = 'images/card_id/' . $filename;
+            $file->move(public_path('images/card'), $filename);
+            $roomRent->image_back = 'images/card/' . $filename;
         }
+
+        $room = Room::find($request->room);
+        $room->status = 'Rented';
+        $room->save();
 
         $roomRent->save();
 
@@ -86,7 +90,7 @@ class RoomRentController extends Controller
      */
     public function edit(RoomRent $roomRent)
     {
-        $rooms = Room::where('status', 'Free')->orderBy('name')->get();
+        $rooms = Room::where('status', 'Free')->where('apartment_id',Auth::user()->apartment_id)->orderBy('name')->get();
         $data = RoomRent::find($roomRent->id);
         $telegramBot = new TelegramBot();
         $listGroups = $telegramBot->listGroup();

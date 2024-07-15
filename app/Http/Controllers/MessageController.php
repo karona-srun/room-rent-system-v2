@@ -23,7 +23,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $messages = Message::orderBy('created_at', 'asc')->get();
+        $messages = Message::where('apartment_id',Auth::user()->apartment_id)->orderBy('created_at', 'asc')->get();
         return view('message.index', ['messages' => $messages]);
     }
 
@@ -32,8 +32,8 @@ class MessageController extends Controller
      */
     public function create()
     {
-        $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::where('status', 'Free')->whereIn('id', $roomRents)->orderBy('name')->get();
+        $roomRents = RoomRent::where('apartment_id',Auth::user()->apartment_id)->pluck('room_id')->toArray();
+        $rooms = Room::where('status', 'Free')->where('apartment_id',Auth::user()->apartment_id)->whereIn('id', $roomRents)->orderBy('name')->get();
         return view('message.create', ['rooms' => $rooms]);
     }
 
@@ -84,8 +84,8 @@ class MessageController extends Controller
     public function edit(Message $message)
     {
         $message = Message::find($message->id);
-        $roomRents = RoomRent::pluck('room_id')->toArray();
-        $rooms = Room::where('status', 'Free')->whereIn('id', $roomRents)->orderBy('name')->get();
+        $roomRents = RoomRent::where('apartment_id',Auth::user()->apartment_id)->pluck('room_id')->toArray();
+        $rooms = Room::where('status', 'Free')->where('apartment_id',Auth::user()->apartment_id)->whereIn('id', $roomRents)->orderBy('name')->get();
         return view('message.edit', ['rooms' => $rooms, 'message' => $message]);
     }
 

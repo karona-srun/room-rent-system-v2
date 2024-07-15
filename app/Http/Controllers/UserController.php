@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Apartment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('name','asc')->get();
+        $users = User::with('apartments')->orderBy('name','asc')->get();
         return view('user.index', ['users'=>$users]);
     }
 
@@ -58,7 +59,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->apartment_id = $request->apartment;
+        $user->apartment_id = $request->apartment[0];
         $user->is_active = $request->is_active;
         $user->password = Hash::make($request->password);
         
@@ -72,6 +73,8 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        $user->apartments()->attach($request->apartment);
 
         return redirect('/user')->with('success',__('app.label_created_successfully'));
     }
@@ -121,7 +124,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->apartment_id = $request->apartment;
+        $user->apartment_id = $request->apartment[0];
         $user->is_active = $request->is_active;
         $user->password = $request->password == "" ? $user->password : Hash::make($request->password);
         
@@ -134,7 +137,18 @@ class UserController extends Controller
 
         $user->save();
 
+        $user->apartments()->sync($request->apartment);
+
         return redirect('/user')->with('success',__('app.label_updated_successfully'));
+    }
+
+    public function changeApartment($id)
+    {
+        $user = User::find(Auth::user()->id);
+        $user->apartment_id = $id;
+        $user->save();
+
+        return redirect()->back();
     }
 
     public function changePassword($id)
@@ -177,6 +191,7 @@ class UserController extends Controller
     public function userDestroy(string $id)
     {
         $user = User::find($id);
+        $user->apartments()->detach();
         $user->delete();
 
         return redirect('/user')->with('danger',__('app.label_deleted_successfully'));

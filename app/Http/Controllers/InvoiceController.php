@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InvoiceCollection;
 use App\Models\Apartment;
 use App\Models\Invoice;
 use App\Models\Room;
@@ -28,32 +29,92 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-
         $keyword = $request->keyword;
-        $start = $request->start_date == '' ? Carbon::parse(date('y-m-d'))->startOfMonth() : $request->start_date .' 00:00:00'; 
-        $end = $request->end_date == '' ? Carbon::parse(date('y-m-d'))->endOfMonth() : $request->end_date .' 23:59:59';
+        $start = $request->start_date == '' ? Carbon::parse(date('y-m-d'))->startOfMonth() : $request->start_date . ' 00:00:00';
+        $end = $request->end_date == '' ? Carbon::parse(date('y-m-d'))->endOfMonth() : $request->end_date . ' 23:59:59';
 
-        $invoice = Invoice::with('room')
-        ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
-        ->select('invoices.*', 'rooms.name as room_name', 'rooms.id as room_id','rooms.created_at as rCreated_at', 'rooms.updated_at as rUpdated_at')
-        ->orderBy('rooms.name', 'asc');
+        $apartmentId = Auth::user()->apartment->id;
+
+        $invoiceQuery = Invoice::with('room')
+            ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
+            ->select(
+                'invoices.*',
+                'rooms.name as room_name',
+                'rooms.id as room_id',
+                'rooms.created_at as rCreated_at',
+                'rooms.updated_at as rUpdatedAt'
+            )
+            ->where('invoices.apartment_id', $apartmentId)
+            ->orderBy('rooms.name', 'asc');
 
         if ($start && $end) {
-            $invoice->where(function ($query) use ($start, $end) {
-                $query->whereBetween('invoices.created_at', [$start, $end]);
-            });
+            $invoiceQuery->whereBetween('invoices.created_at', [$start, $end]);
         }
+
         if ($keyword) {
-            $invoice->where(function ($query) use ($keyword) {
-                $query->where('rooms.name','LIKE', '%'. $keyword .'%')
-                      ->orwhere('invoices.invoice_no','LIKE', '%'. $keyword .'%');
+            $invoiceQuery->where(function ($query) use ($keyword) {
+                $query->where('rooms.name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('invoices.invoice_no', 'LIKE', '%' . $keyword . '%');
             });
         }
 
-        $apart = Apartment::find(Auth::user()->apartment->id);
-        $invoice = $invoice->get();
+        $invoices = $invoiceQuery->get();
+        $apart = Apartment::find($apartmentId);
 
-        return view('invoice.index', ['invoice' => $invoice, 'apart' => $apart]);
+        return view('invoice.index', ['invoice' => $invoices, 'apart' => $apart]);
+    }
+
+    public function invoiceSearch(Request $request)
+    {
+        $keyword = $request->keyword;
+        $start = $request->start_date == '' ? Carbon::parse(date('y-m-d'))->startOfMonth() : $request->start_date .' 00:00:00';
+        $end = $request->end_date == '' ? Carbon::parse(date('y-m-d'))->endOfMonth() : $request->end_date .' 23:59:59';
+        $send = $request->send_noted;
+        $screenshot = $request->screenshot;
+        $paid = $request->is_paid;
+        $apartmentId = Auth::user()->apartment->id;
+
+        $invoiceQuery = Invoice::with('room')
+            ->join('rooms', 'invoices.room_rent_id', '=', 'rooms.id')
+            ->select(
+                'invoices.*',
+                'rooms.name as room_name',
+                'rooms.id as room_id',
+                'rooms.created_at as rCreated_at',
+                'rooms.updated_at as rUpdatedAt'
+            )
+            ->where('invoices.apartment_id', $apartmentId)
+            ->orderBy('rooms.name', 'asc');
+
+        if ($start && $end) {
+            $invoiceQuery->whereBetween('invoices.created_at', [$start, $end]);
+        }
+
+        if ($keyword) {
+            $invoiceQuery->where(function ($query) use ($keyword) {
+                $query->where('rooms.name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('invoices.invoice_no', 'LIKE', '%' . $keyword . '%');
+            });
+        }
+
+        if ($paid !== null) {
+            $invoiceQuery->where('invoices.is_paid', (bool) $paid);
+        }
+
+        if($screenshot !== null){
+            $invoiceQuery->where('invoices.is_screenshot', (bool) $screenshot);
+        }
+
+        if($send == 1){
+            $invoiceQuery->where('invoices.telegram_message','done');
+        }else{
+            $invoiceQuery->where('invoices.telegram_message');
+        }
+
+        $invoice = $invoiceQuery->get();
+        $apart = Apartment::find($apartmentId);
+
+        return view('invoice.search', ['invoice' => $invoice, 'apart' => $apart]);
     }
 
     /**
@@ -98,6 +159,7 @@ class InvoiceController extends Controller
         $invoice->is_paid = 0;
         $invoice->is_screenshot = 0; // Not yet
         $invoice->invoice_no = $this->invoiceNo();
+        $invoice->apartment_id = Auth::user()->apartment_id;
         $invoice->invoice_date = $request->day . '-' . $request->month . '-' . $request->year;
         $invoice->room_rent_id = $request->room;
         $invoice->room_cost = $request->room_cost;
@@ -241,7 +303,7 @@ class InvoiceController extends Controller
         } catch (TelegramOtherException $e) {
             Log::error("Error ** Send Invoice ** " . $e->getMessage());
         }
-        
+
         return redirect('/invoice')->with('success', __('app.label_sent_successfully'));
     }
 

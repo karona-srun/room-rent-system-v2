@@ -19,7 +19,7 @@
                                 class="btn btn-primary btn-with-icon btn-block">{{ __('app.btn_new') }}</a>
                         </div>
                     </div>
-                    <form action="{{ url('invoice') }}" method="get">
+                    <form action="{{ url('invoice-search') }}" method="get" class="InvStatus">
                         <div class="row mb-3">
                             <div class="col-sm-3 mb-2">
                                 <div class="form-group">
@@ -40,6 +40,34 @@
                                         class=" typcn typcn-business-card"></i> {{ __('app.menu_search_invoice') }}</button>
                             </div>
                         </div>
+                    {{-- </form>
+                    <form action="{{ url('invoice-search') }}" method="get" class="InvStatus"> --}}
+                    <div class="row mb-3">
+                        <div class="col-sm-2 mb-2">
+                            <label for="" class="mb-2">{{__('app.label_status_pay')}}</label>
+                            <select name="is_paid" id="is_paid" class="form-control select2-no-search is_paid">
+                                @foreach (__('app.pay_select') as $value => $data)
+                                    <option value="{{ $value }}" {{ request('is_paid') == $value ? 'selected' : '' }}>{{ $data }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-2 mb-2">
+                            <label for="" class="mb-2">{{__('app.label_screenshot')}}</label>
+                            <select name="screenshot" id="screenshot" class="form-control select2-no-search">
+                                @foreach (__('app.screenshot_select') as $value => $data)
+                                    <option value="{{ $value }}" {{ request('screenshot') == $value ? 'selected' : '' }}>{{ $data }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-2 mb-2">
+                            <label for="" class="mb-2">{{__('app.label_send_noted')}}</label>
+                            <select name="send_noted" id="send_noted" class="form-control select2-no-search">
+                                @foreach (__('app.send_select') as $value => $data)
+                                    <option value="{{ $value }}" {{ request('send_noted') == $value ? 'selected' : '' }}>{{ $data }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     </form>
                     <form action="{{ url('invoice/send-all') }}" method="post">
                         @csrf
@@ -55,12 +83,12 @@
                                     <th>
                                         <input type="checkbox" class="form-check-input text-center checkAll" name="id">
                                     </th>
-                                    <th class="wd-10p">{{ __('app.label_no') }}</th>
+                                    <th>{{ __('app.label_no') }}</th>
                                     <th class="wd-10p">{{ __('app.menu_room') }}</th>
                                     <th>{{ __('app.label_invoice_date') }}</th>
-                                    <th class="wd-20p sorting">{{ __('app.label_total_amount') }}</th>
-                                    <th class="wd-20p sorting">{{ __('app.label_status_pay') }}</th>
-                                    <th class="wd-20p sorting">{{ __('app.label_screenshot') }}</th>
+                                    <th class="wd-30p">{{ __('app.label_created_at') }}</th>
+                                    <th class="wd-30p sorting">{{ __('app.label_total_amount') }}</th>
+                                    <th class="wd-30p sorting">.{{ __('app.label_status_pay') }} <br>.{{ __('app.label_screenshot') }}</th>
                                     <th class="wd-20p">{{ __('app.label_send_noted') }}</th>
                                     <th class=""></th>
                                 </tr>
@@ -71,48 +99,48 @@
                                         <td class="dtr-control">
                                             <input type="checkbox"
                                                 class="form-check form-check-input-custom form-check-input checkOne"
-                                                name="select_room_id[]" value="{{ $item->id }}">
+                                                name="select_room_id[]" value="{{ $item['id'] }}">
                                         </td>
                                         <td>{{ ++$key }}</td>
-                                        <td>{{ $item->room->name }}</td>
+                                        <td>{{ $item['room_name'] }}</td>
                                         <td>
-                                            <span class="badge badge-dark mb-1">{{ $item->invoice_no }}</span>
-                                            {{ KhmerDateTime\KhmerDateTime::parse($item->invoice_date)->format('LLL') }}
+                                            <span class="badge badge-dark mb-1">{{ $item['invoice_no'] }}</span><br>
+                                            {{ KhmerDateTime\KhmerDateTime::parse($item['invoice_date'])->format('LLL') }}
                                         </td>
-                                        <td>{{ $item->sub_total_amount }} ឬ {{ $item->total_amount }}</td>
+                                        <td>{{ KhmerDateTime\KhmerDateTime::parse($item['created_at'])->format('LL') }}</td>
+                                        <td>{{ $item['total_amount'] }}</td>
                                         <td>
                                             <span
-                                                class="badge {{ $item->is_paid == 0 ? 'badge-warning' : 'badge-success' }}">{{ $item->is_paid == 0 ? __('app.label_not_pay') : __('app.label_paid') }}</span>
-                                        </td>
-                                        <td>
+                                                class="badge {{ $item['is_paid'] == 0 ? 'badge-warning' : 'badge-success' }}"><i class="typcn typcn-ticket"></i> {{ $item['is_paid'] == 0 ? __('app.label_not_pay') : __('app.label_paid') }}</span>
+                                        <br>
                                             <span
-                                                class="badge {{ $item->is_screenshot == 0 ? 'badge-warning' : 'badge-success' }}">{{ $item->is_screenshot == 0 ? __('app.label_not_yet') : __('app.label_done') }}</span>
+                                                class="badge {{ $item['is_screenshot'] == 0 ? 'badge-warning' : 'badge-success' }}"><i class="typcn typcn-camera-outline"></i> {{ $item['is_screenshot'] == 0 ? __('app.label_not_yet') : __('app.label_done') }}</span>
                                         </td>
                                         <td>
                                             <span class="badge badge-info mb-1"><i class=" typcn typcn-input-checked"></i>
-                                                {{ $item->telegram_message == 'done' ? 'ផ្ញើរួច' : 'នៅទេ' }}</span>
+                                                {{ $item['telegram_message'] == 'done' ? 'ផ្ញើរួច' : 'នៅទេ' }}</span>
                                             <br>
                                             <span class="badge badge-primary"><i class=" typcn typcn-time"></i>
-                                                {{ $item->telegram_message_at == '' ? '' : KhmerDateTime\KhmerDateTime::parse($item->telegram_message_at)->format('LLT') }}</span>
+                                                {{ $item['telegram_message_at'] == '' ? '' : KhmerDateTime\KhmerDateTime::parse($item['telegram_message_at'])->format('LLT') }}</span>
                                         </td>
                                         <td>
                                             <div class="btn-icon-list">
-                                                <a href="{{ url('invoice/pay/' . $item->id) }}"
+                                                <a href="{{ url('invoice/pay/' . $item['id']) }}"
                                                     class="btn btn-success btn-icon me-2"><i
-                                                        class=" typcn typcn-ticket text-white"></i></a>
-                                                <a href="{{ url('invoice/send/' . $item->id) }}"
+                                                        class="typcn typcn-ticket text-white"></i></a>
+                                                <a href="{{ url('invoice/send/' . $item['id']) }}"
                                                     class="btn btn-success btn-icon me-2"><i
                                                         class="typcn typcn-location-arrow-outline text-white"></i></a>
-                                                <a href="{{ url('invoice/screenshot/' . $item->id) }}"
+                                                <a href="{{ url('invoice/screenshot/' . $item['id']) }}"
                                                     class="btn btn-info btn-icon me-2"><i
                                                         class="typcn typcn-camera-outline text-white"></i></a>
-                                                <a href="{{ url('invoice/print/' . $item->id) }}"
+                                                <a href="{{ url('invoice/print/' . $item['id']) }}"
                                                     class="btn btn-info btn-icon me-2"><i
                                                         class="typcn typcn-printer text-white"></i></a>
-                                                <a href="{{ url('invoice/' . $item->id . '/edit') }}"
+                                                <a href="{{ url('invoice/' . $item['id'] . '/edit') }}"
                                                     class="btn btn-indigo btn-icon me-2"><i
                                                         class="typcn typcn-edit"></i></a>
-                                                <a href="{{ url('invoice/destroy', $item->id) }}"
+                                                <a href="{{ url('invoice/destroy', $item['id']) }}"
                                                     class="btn btn-danger btn-icon"><i class="typcn typcn-trash"></i></a>
                                                 </a>
                                             </div>
@@ -153,6 +181,26 @@ $(document).ready(function () {
 		yearSuffix: ''};
 	$.datepicker.setDefaults($.datepicker.regional['km']);
     $('#start_date, #end_date').datepicker();
+
+    $('.InvStatus select').change(function() {
+        var form = $(this).closest('form');
+        $.ajax({
+            url: form.attr('action'),
+            method: form.attr('method'),
+            data: form.serialize(),
+            success: function(response) {
+                // Handle success
+                console.log(response);
+                var newUrl = $('.InvStatus').attr('action') + '?' + $('.InvStatus').serialize();
+                window.history.pushState({ path: newUrl }, '', newUrl);
+            },
+            error: function(xhr) {
+                // Handle error
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
 });
 </script>
 @endsection

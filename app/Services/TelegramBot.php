@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Apartment;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Telegram\Bot\FileUpload\InputFile;
@@ -15,12 +17,15 @@ class TelegramBot
 {
     public function listGroup()
     {
-        $response = Telegram::getUpdates();
-        for ($i = 0; $i < count($response); $i++) {
-            if ($response[$i]->my_chat_member != "") {
-                $listGroup[$i] = $response[$i]->my_chat_member->chat;
-            }
-        }
+        $listGroup = [];
+        // $apart = Apartment::find(Auth::user()->apartment_id);
+        // Telegram::setAccessToken($apart->token);
+        // $response = Telegram::getUpdates();
+        // for ($i = 0; $i < count($response); $i++) {
+        //     if ($response[$i]->my_chat_member != "") {
+        //         $listGroup[$i] = $response[$i]->my_chat_member->chat;
+        //     }
+        // }
 
         return $listGroup;
     }
@@ -28,6 +33,8 @@ class TelegramBot
     public function sendMessageText($groupId, $message)
     {
         Telegram::setTimeOut(30);
+        $apart = Apartment::find(Auth::user()->apartment_id);
+        Telegram::setAccessToken($apart->token);
         $response = Telegram::sendMessage([
             'chat_id' => $groupId,
             'text' => $message,
@@ -38,6 +45,8 @@ class TelegramBot
 
     public function editMessageText($groupId, $messageId, $message)
     {
+        $apart = Apartment::find(Auth::user()->apartment_id);
+        Telegram::setAccessToken($apart->token);
         Telegram::editMessageText([
             'chat_id' => $groupId,
             'message_id' => $messageId,
@@ -56,6 +65,8 @@ class TelegramBot
     public function sendMessagePhoto($groupId, $path, $message)
     {
         Telegram::setTimeOut(30);
+        $apart = Apartment::find(Auth::user()->apartment_id);
+        Telegram::setAccessToken($apart->token);
         $response = Telegram::sendPhoto([
             'chat_id' => $groupId[0],
             'photo' => InputFile::create(public_path() . '/' . $path . ".jpg"),
@@ -73,6 +84,8 @@ class TelegramBot
 
     public function deleteMessagePhoto($groupId, $messageId)
     {
+        $apart = Apartment::find(Auth::user()->apartment_id);
+        Telegram::setAccessToken($apart->token);
         Telegram::deleteMessage([
             'chat_id' => $groupId,
             'message_id' => $messageId,
@@ -81,6 +94,8 @@ class TelegramBot
 
     public function sendMessageGroupPhone($groupId, $path, $message)
     {
+        $apart = Apartment::find(Auth::user()->apartment_id);
+        Telegram::setAccessToken($apart->token);
         $photo1 = InputMediaInputMedia::createPhoto([
             'type' => 'photo',
             'media' => InputFile::create(public_path() . '/' . $path . ".jpg"),
@@ -101,7 +116,7 @@ class TelegramBot
                 $photo2,
             ],
             'caption_entities' => [
-                'phone_number' => '+85596773007'
+                'phone_number' => '+85586773007'
             ]
         ]);
 

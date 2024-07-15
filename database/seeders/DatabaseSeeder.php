@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         
-        \App\Models\Apartment::create([
+        $apartment_id = \App\Models\Apartment::create([
             'id' => Str::uuid(),
             'name' => 'Apartment',
-            'logo' => '/img/apartment.png',
+            'logo' => 'apartment.png',
             'exchange_riel' => '4000',
             'water_cost' => '4000',
             'trash_cost' => '4000',
@@ -29,8 +29,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'id' => Str::uuid(),
+            'apartment_id' => $apartment_id,
             'name' => 'Karona',
-            'email' => 'karona@gmail.com',
+            'email' => 'admin@gmail.com',
             'phone' => '086773007',
             'image' => '/img/faces/user.gif',
             'email_verified_at' => now(),

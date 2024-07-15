@@ -132,7 +132,7 @@
                                         </div>
 
                                     </div>
-                                    @if ($invoice->water_cost != "0")
+                                    @if($apart->water_module)
                                     <div class="row mb-4">
                                         <div class="col-sm-5 mb-4">
                                             <div class="input-group">

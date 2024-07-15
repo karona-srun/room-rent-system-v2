@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('apartment_id')->nullable();
             $table->boolean('is_paid');
             $table->boolean('is_screenshot');
             $table->string('telegram_message')->nullable();

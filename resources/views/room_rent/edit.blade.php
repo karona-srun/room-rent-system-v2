@@ -88,7 +88,7 @@
                                                             <img class="card-img-top card-id rounded card-photo-front imagePreviewFront"
                                                                 src="{{ asset('assets/img/card/front.png') }}" alt="Card image cap">
                                                             <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg"
-                                                                name="photo_front" id="photo_front" class="imageUploadFront"
+                                                                name="image_front" id="photo_front" class="imageUploadFront"
                                                                 style="display: none">
                                                         </div>
                                                     </div>
@@ -99,7 +99,7 @@
                                                             <img class="card-img-top card-id rounded card-photo-back imagePreviewBack"
                                                                 src="{{ asset('assets/img/card/back.png') }}" alt="Card image cap">
                                                             <input type="file" accept="image/png, image/gif, image/jpeg, image/jpg"
-                                                                name="photo_back" id="photo_back" class="imageUploadBack"
+                                                                name="image_back" id="photo_back" class="imageUploadBack"
                                                                 style="display: none">
                                                         </div>
                                                     </div>

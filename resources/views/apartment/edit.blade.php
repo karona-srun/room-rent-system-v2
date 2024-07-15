@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-9 col-sm-12">
                                         <div class="row">
-                                            <div class="col-sm-6 mb-3">
+                                            <div class="col-sm-12 mb-3">
                                                 <label class="form-label">{{ __('app.label_apartment') }} <span
                                                         class="tx-danger">*</span></label>
                                                 <input class="form-control" name="name" placeholder="" type="text"
@@ -55,6 +55,21 @@
                                                     </ul>
                                                 @enderror
                                             </div>
+                                        </div>
+                                        <div class="row mb-3 mt-2">
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">{{ __('app.trash_cost') }} <span
+                                                        class="tx-danger">*</span></label>
+                                                <input class="form-control" name="trash_cost" step="any"
+                                                    value="{{ $apart->trash_cost }}" placeholder="" type="number">
+                                                @error('trash_cost')
+                                                    <ul class="parsley-errors-list filled" id="parsley-id-5"
+                                                        aria-hidden="false">
+                                                        <li class="parsley-required">{{ $message }}</li>
+                                                    </ul>
+                                                @enderror
+                                            </div>
+
                                             <div class="col-sm-6 mb-3">
                                                 <label class="form-label">{{ __('app.label_exchange_riel') }} <span
                                                         class="tx-danger">*</span></label>
@@ -68,45 +83,59 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-6 mb-3">
-                                                <label class="form-label">{{ __('app.label_water_cost') }} <span
-                                                        class="tx-danger">*</span></label>
-                                                <input class="form-control" name="water_cost" step="any"
-                                                    value="{{ $apart->water_cost }}" placeholder="" type="number">
-                                                @error('water_cost')
-                                                    <ul class="parsley-errors-list filled" id="parsley-id-5"
-                                                        aria-hidden="false">
-                                                        <li class="parsley-required">{{ $message }}</li>
-                                                    </ul>
-                                                @enderror
-                                            </div>
-                                            <div class="col-sm-6 mb-3">
-                                                <label class="form-label">{{ __('app.trash_cost') }} <span
-                                                        class="tx-danger">*</span></label>
-                                                <input class="form-control" name="trash_cost" step="any"
-                                                    value="{{ $apart->trash_cost }}" placeholder="" type="number">
-                                                @error('trash_cost')
-                                                    <ul class="parsley-errors-list filled" id="parsley-id-5"
-                                                        aria-hidden="false">
-                                                        <li class="parsley-required">{{ $message }}</li>
-                                                    </ul>
-                                                @enderror
-                                            </div>
-                                        </div>
                                         <div class="row mb-3 mt-2">
                                             <div class="col-sm-12">
                                                 <div class="card">
-                                                    <div class="card-header">{{__('app.label_date_info')}}</div>
+                                                    <div class="card-header">{{ __('app.label_water_module') }}</div>
                                                     <div class="card-body">
                                                         <div class="row mb-3">
                                                             <div class="col-sm-6 mb-2">
-                                                                <label class="form-label">{{ __('app.label_apart_start_date') }}</label>
-                                                                <input type="number" class="form-control" name="start_date" value="{{ $apart->start_date }}"/>
+                                                                <label
+                                                                    class="form-label">{{ __('app.label_water_module') }}</label>
+                                                                <select name="water_module" id=""
+                                                                    class=" form-select select2">
+                                                                    <option value="0">
+                                                                        {{ __('app.label_water_module_on') }}</option>
+                                                                    <option value="1">
+                                                                        {{ __('app.label_water_module_off') }}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6 mb-3">
+                                                                <label class="form-label">{{ __('app.label_water_cost') }}
+                                                                    <span class="tx-danger">*</span></label>
+                                                                <input class="form-control" name="water_cost" step="any"
+                                                                    value="{{ $apart->water_cost }}" placeholder=""
+                                                                    type="number">
+                                                                @error('water_cost')
+                                                                    <ul class="parsley-errors-list filled" id="parsley-id-5"
+                                                                        aria-hidden="false">
+                                                                        <li class="parsley-required">{{ $message }}</li>
+                                                                    </ul>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 mt-2">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-header">{{ __('app.label_date_info') }}</div>
+                                                    <div class="card-body">
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-6 mb-2">
+                                                                <label
+                                                                    class="form-label">{{ __('app.label_apart_start_date') }}</label>
+                                                                <input type="number" class="form-control"
+                                                                    name="start_date" value="{{ $apart->start_date }}" />
                                                             </div>
                                                             <div class="col-sm-6">
-                                                                <label class="form-label">{{ __('app.label_apart_end_date') }}</label>
-                                                                <input type="number" class="form-control" name="end_date" value="{{ $apart->end_date }}"/>
+                                                                <label
+                                                                    class="form-label">{{ __('app.label_apart_end_date') }}</label>
+                                                                <input type="number" class="form-control"
+                                                                    name="end_date" value="{{ $apart->end_date }}" />
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -118,6 +147,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-12 mb-2">
+                                                <label class="form-label">{{ __('app.label_telegram_key') }}</label>
+                                                <input class="form-control" name="token" value="{{ $apart->token }}">
                                             </div>
                                         </div>
                                         <div class="row mb-3 mt-2">

@@ -13,9 +13,17 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::orderBy('name','asc')->get();
+        $rooms = Room::orderBy('name','asc')->where('apartment_id',Auth::user()->apartment_id)->get();
+
+        if($request->status){
+            $rooms = Room::orderBy('name','asc')->where('apartment_id',Auth::user()->apartment_id)->where('status',$request->status)->get();   
+        }
+
+        if($request->status == "All")
+            $rooms = Room::orderBy('name','asc')->where('apartment_id',Auth::user()->apartment_id)->get();
+
         foreach ($rooms as $key => $room) {
             if ($room->status == 'Free') {
                 $rooms[$key]->status = __('app.status_free');
@@ -42,7 +50,7 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:rooms',
+            'name' => 'required',
             'price' => 'required',
             'status' => 'required',
         ],[

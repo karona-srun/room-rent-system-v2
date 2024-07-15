@@ -14,7 +14,23 @@
                             <a href="{{ url('room/create') }}"​ class="btn btn-az-secondary">{{ __('app.btn_new') }}</a>
                         </div>
                     </div>
-
+                    <div class="row mb-3">
+                        <div class="col-sm-auto">
+                            <label class="ckbox">
+                                <input type="checkbox" class="filter-checkbox" data-status="All" {{Request::get('status') == 'All' || Request::get('status') == '' ? 'checked' : ''}}><span>{{ __('app.label_room_all')}}</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-auto">
+                            <label class="ckbox">
+                                <input type="checkbox" class="filter-checkbox" data-status="Free" {{Request::get('status') == 'Free' ? 'checked' : ''}}><span>{{ __('app.label_room_free')}}</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-auto">
+                            <label class="ckbox">
+                                <input type="checkbox" class="filter-checkbox" data-status="Rented" {{Request::get('status') == 'Rented' ? 'checked' : ''}}><span>{{ __('app.label_room_renting')}}</span>
+                              </label>
+                        </div>
+                    </div>
                     <table id="example2" class="table dataTable dtr-inline" aria-describedby="example2_info"
                         style="min-width: -webkit-fill-available !important;">
                         <thead>
@@ -57,3 +73,18 @@
         </div>
     </div>
 @endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('.filter-checkbox').change(function(){
+                let name = $(this).data('status');
+                let checked = $(this)[0].checked ? 1 : 0;
+
+                let url = new URL(window.location);
+                url.searchParams.set("status", name);
+                window.location = url
+            })
+        });
+    </script>
+@endsection
+

@@ -14,4 +14,8 @@ class RoomRent extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
+    public function roomAvailable() {
+        return $this->belongsTo(Room::class, 'room_id', 'id')->get();
+    }
 }

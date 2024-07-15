@@ -85,7 +85,7 @@
                                             <div class="col-sm-4 mb-2">
                                                 <label class="form-label">{{ __('app.label_apartment') }} <span
                                                         class="tx-danger">*</span></label>
-                                                <select class="form-control select2 room" name="apartment">
+                                                <select class="form-control select2 room" name="apartment[]" multiple="multiple">
                                                     <option value="">{{ __('app.label_choose') }}</option>
                                                     @foreach ($apartment as $apart)
                                                         <option value="{{ $apart->id }}"

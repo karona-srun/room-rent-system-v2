@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('send-message-list/{id}', [MessageController::class, 'messageList']);
 
     Route::resource('/invoice', InvoiceController::class);
+    Route::get('/invoice-search', [InvoiceController::class, 'invoiceSearch']);
     Route::get('/invoice/destroy/{id}', [InvoiceController::class, 'invoiceDestroy']);
     Route::get('/invoice/pay/{id}', [InvoiceController::class, 'pay']);
     Route::get('/invoice/print/{id}', [InvoiceController::class, 'print']);
@@ -49,10 +50,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/invoice/send-all', [InvoiceController::class, 'sendAll']);
 
     Route::resource('/user', UserController::class);
+    Route::get('/change-apartment/{id}', [UserController::class, 'changeApartment']);
     Route::get('/user/status/{id}', [UserController::class, 'userStatus']);
     Route::get('/user/destroy/{id}', [UserController::class, 'userDestroy']);
     Route::get('/user/change-password/{id}', [UserController::class, 'changePassword']);
     Route::post('/user/update-password/{id}', [UserController::class, 'updatePassword']);
 
     Route::resource('/apartment', ApartmentController::class);
+    Route::get('/water-module/{id}',[App\Http\Controllers\ApartmentController::class, 'waterModule']);
 });

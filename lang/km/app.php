@@ -36,7 +36,14 @@ return [
     'menu_setting_system' => 'កំណត់ព័ត៍មាន',
     'label_info_monthly' => 'ព៍ត័មានប្រចាំខែ',
     'label_count_room' => 'ចំនួនបន្ទប់',
+    'label_count_rent_room' => 'ចំនួនបន្ទប់ជួល',
+    'label_count_room_free' => 'ចំនួនបន្ទប់ទំនេរ',
     'label_count_room_rent' => 'ចំនួនបន្ទប់ជួល',
+
+    'label_room_all' => 'បន្ទប់ទាំងអស់',
+    'label_room_free' => 'បន្ទប់ទំនេរ',
+    'label_room_renting' => 'បន្ទប់កំពុងជួល',
+
     'label_count_user' => 'ចំនួនអ្នកប្រើប្រាស់',
     'label_info_detail' => 'ព៍ត័មានបន្ថែម',
     'label_info_summary' => 'ព៍ត័មានសង្ខេបរបស់ស៊ីស្ទឹល',
@@ -85,6 +92,10 @@ return [
     'label_apartment_logo' => 'លោហ្គោល',
     'label_exchange_riel' => 'អត្រាប្តូរប្រាក់រៀល',
     'label_water_cost' => 'តម្លៃទឺកក្នុង ១ម៉ែត្រគូប',
+    'label_water_module' => 'មុខងារបង់ថ្លៃទឹក',
+    'label_water_module_on' => 'បើក',
+    'label_water_module_off' => 'បិទ',
+    'label_telegram_key' => 'Telegram Token',
     'label_exchange_dollar' => 'អត្រាប្តូរប្រាក់ដុល្លា',
     'label_trash_cost' => 'តម្លៃសំរាម',
     'label_apartment_info' => 'ព័ត៍មានអាគារ',
@@ -188,5 +199,16 @@ return [
     'status_rented' => 'បានជួល',
     'status_free' => 'ទំនេរ',
     'status_fixing' => 'កំពុងជួសជុល',
-    '' => '',
+    'pay_select' => [
+        '0' => 'មិនទាន់បង់ប្រាក់',
+        '1' => 'បានបង់ប្រាក់',
+    ],
+    'screenshot_select' => [
+        '0' => 'នៅ',
+        '1' => 'រួចរាល់',
+    ],
+    'send_select' => [
+        '0' => 'មិនទាន់បានផ្ញើ',
+        '1' => 'បានផ្ញើរួច'
+    ],
 ];
