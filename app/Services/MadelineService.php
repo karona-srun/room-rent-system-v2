@@ -8,64 +8,51 @@ use Illuminate\Support\Facades\Log;
 
 class MadelineService
 {
-    protected $API;
+    protected $MadelineProto;
 
     public function __construct()
     {
-        $this->API = new API('session.madeline');
+        $settings = [
+            'app_info' => [
+                'api_id' => env('TELEGRAM_API_ID'),
+                'api_hash' => env('TELEGRAM_API_HASH')
+            ]
+        ];
+         // Log the settings to debug
+         Log::info('Telegram settings: ', $settings);
+
+        $this->MadelineProto = new API('session.madeline');
     }
 
-    public function login($phoneNumber)
+    public function connect()
     {
-        try {
-            $this->API->phoneLogin($phoneNumber);
-            return 'Logged in successfully';
-        } catch (\danog\MadelineProto\Exception $e) {
-            return 'Login failed: ' . $e->getMessage();
-        }
-    }
-
-    public function OTP($code)
-    {
-        try {
-            $this->API->completePhoneLogin($code);
-            return 'Logged in successfully';
-        } catch (\danog\MadelineProto\Exception $e) {
-            return 'Login failed: ' . $e->getMessage();
-        }
+        $this->MadelineProto->start();
     }
 
     public function sendMessage($peer, $message)
     {
-        try {
-            $this->API->messages->sendMessage([
-                'peer' => $peer,
-                'message' => $message,
-            ]);
-            return 'Message sent successfully';
-        } catch (\danog\MadelineProto\Exception $e) {
-            return 'Error: ' . $e->getMessage();
-        }
+        $this->MadelineProto->messages->sendMessage(['peer' => $peer, 'message' => $message]);
     }
 
-    public function sendMessageToTelegramUser($phoneNumber, $message) {
-        $MadelineProto = new API('session.madeline');
-
+    public function getUsernameByPhoneNumber($phoneNumber)
+    {
         try {
-            // $MadelineProto->start();
-
-            //$MadelineProto->phoneLogin($phoneNumber);
-
-            // Send the message to the Telegram user
-            $MadelineProto->messages->sendMessage([
-                'peer' => $phoneNumber,
-                'message' => $message
+            $contacts = $this->MadelineProto->contacts->importContacts([
+                'contacts' => [
+                    ['_'=>'inputPhoneContact', 'client_id' => 0, 'phone' => $phoneNumber, 'first_name' => 'First', 'last_name' => 'Last']
+                ]
             ]);
 
-            // $MadelineProto->logout();
-        } catch (\danog\MadelineProto\RPCErrorException $e) {
-            Log::info($e->getMessage());
-            throw new Exception("Error sending message: " . $e->getMessage());
+            if (!empty($contacts['users'])) {
+                $user = $contacts['users'][0];
+                return $user['username'] ?? null;
+            }
+
+            return null;
+        } catch (Exception $e) {
+            // Handle exceptions (e.g., log the error, rethrow, etc.)
+            return null;
         }
     }
 }
+

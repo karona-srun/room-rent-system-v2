@@ -7,6 +7,7 @@ use App\Models\Apartment;
 use App\Models\Invoice;
 use App\Models\Room;
 use App\Models\RoomRent;
+use App\Services\MadelineService;
 use App\Services\TelegramBot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

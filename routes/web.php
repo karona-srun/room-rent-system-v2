@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TelegramController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
 Route::get('/login-only-password/{id}', [WelcomeController::class, 'loginOnlyPassword']);
+
+
+
+Route::post('/send-message', [TelegramController::class, 'sendMessage']);
+Route::get('/get-username', [TelegramController::class, 'getUsernameByPhoneNumber']);
 
 Auth::routes([
     'register' => false,

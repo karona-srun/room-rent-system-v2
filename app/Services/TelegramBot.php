@@ -12,9 +12,65 @@ use Telegram\Bot\Objects\InputMedia\InputMediaDocument;
 use Telegram\Bot\FileUpload\InputMedia;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\Objects\InputMedia\InputMedia as InputMediaInputMedia;
+use GuzzleHttp\Client;
 
 class TelegramBot
 {
+
+    protected $botToken;
+    protected $client;
+
+    public function __construct()
+    {
+        $this->botToken = env('TELEGRAM_BOT_TOKEN');
+        $this->client = new Client();
+    }
+
+    public function sendMessageByPhoneNumber($phoneNumber, $message)
+    {
+        // Here you would typically resolve the user ID by phone number using your own logic
+        $chatId = $this->getChatIdByPhoneNumber($phoneNumber);
+
+        if ($chatId) {
+            return $this->sendMessage($chatId, $message);
+        }
+
+        return false;
+    }
+
+    private function getChatIdByPhoneNumber($phoneNumber)
+    {
+        // This function should implement the logic to resolve a phone number to a chat ID
+        // For this example, it will return a hardcoded chat ID
+        // You need to implement the actual resolution logic based on your user base and storage
+
+        // Example hardcoded chat ID
+        return '+85585773007'; // Replace with actual logic
+    }
+
+    private function sendMessage($chatId, $message)
+    {
+
+        $webhookUrl = url('/telegram/webhook');
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->post("https://api.telegram.org/bot{$this->botToken}/setWebhook", [
+            'form_params' => [
+                'url' => $webhookUrl,
+            ],
+        ]);
+
+        $url = "https://api.telegram.org/bot{$this->botToken}/sendMessage";
+        $response = $this->client->post($url, [
+            'form_params' => [
+                'chat_id' => $chatId,
+                'text' => $message,
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
     public function listGroup()
     {
         $listGroup = [];
